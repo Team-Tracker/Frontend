@@ -2,26 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
+/* base styles */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #000e2b; /* Dark blue */
+  color: #ffffff; /* White text for contrast */
+  font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
+}
+
+/* Reset some base styles */
+a {
+  color: inherit; /* Links inherit color */
+  text-decoration: none; /* No underline on links */
+}
+
+/* Ensure all positioned elements respect z-index layering */
+.z-10 {
+  z-index: 10;
+}
+
+.z-5 {
+  z-index: 5;
 }
