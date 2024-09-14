@@ -10,6 +10,9 @@ const Sidebar = () => {
         <Link href="/teams" className="text-white text-lg font-semibold hover:text-gray-300 block">
           Teams
         </Link>
+        <Link href="/projects" className="text-white text-lg font-semibold hover:text-gray-300 block">
+          Projects
+        </Link>
         <Link href="/calender" className="text-white text-lg font-semibold hover:text-gray-300 block">
           Calendar
         </Link>
