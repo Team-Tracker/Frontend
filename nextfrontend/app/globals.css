@@ -24,3 +24,9 @@ a {
 .z-5 {
   z-index: 5;
 }
+
+.main-content {
+  margin-top: 64px; /* This is the height of your navbar */
+  margin-left: 256px; /* This is the width of your sidebar */
+  padding: 20px;
+}
