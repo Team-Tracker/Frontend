@@ -10,7 +10,7 @@ const TeamPage = () => {
     return (
         <div className="ml-1 mt-1 p-4">
         <h1 className="text-3xl font-bold">Welcome in the team</h1>
-        {/* Here you can display more team-specific details */}
+        {/* Projectlist will be added */}
         </div>
     );
 };
