@@ -40,28 +40,31 @@ export default function LoginPage() {
      */
 
     const verifylogin = await loginUser(username, password);
+    setLoading(false)
 
-    // const data = await response.json();
-    // const newSessionId = data.sessionId;
+    if (verifylogin.ok) {
+      // const data = await response.json();
+      // const newSessionId = data.sessionId;
 
-    // Store sessionId in local storage or cookies
-    // localStorage.setItem('sessionId', newSessionId);
+      // Store sessionId in local storage or cookies
+      // localStorage.setItem('sessionId', newSessionId);
 
-    // Set cookie with the username (username in this case)
-    document.cookie = `username=${username}; path=/; max-age=3600;`; // Cookie will last for 1 hour
+      // Set cookie with the username (username in this case)
+      document.cookie = `username=${username}; path=/; max-age=3600;`; // Cookie will last for 1 hour
 
-    // Navigate to home page
-    console.log("Pushing to '/'");
-    router.push("/");
-    // Force reload if necessary
-    console.log("Reloading...");
-    router.refresh();
-    console.log("Finished reloading :)")
-    // console.log("Pushing to '/'");
-    // router.push("/");
-    // console.log("Reloading...");
-    // router.reload();
-    // console.log("Finished reloading :)")
+      // Navigate to home page
+      console.log("Pushing to '/'");
+      router.push("/");
+      // Force reload if necessary
+      console.log("Reloading...");
+      router.refresh();
+      console.log("Finished reloading :)")
+      // console.log("Pushing to '/'");
+      // router.push("/");
+      // console.log("Reloading...");
+      // router.reload();
+      // console.log("Finished reloading :)")
+    }
   };
 
   return (

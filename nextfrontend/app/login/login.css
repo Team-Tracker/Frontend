@@ -6,10 +6,9 @@
 /* base styles */
 body {
   background-color: #000e2b; /* Dark blue */
-  color: #ffffff; /* White text for contrast */
+  color: #00000000; /* White text for contrast */
   font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
 
-  
   /* Flexbox for centering content */
   display: flex;
   justify-content: center;
