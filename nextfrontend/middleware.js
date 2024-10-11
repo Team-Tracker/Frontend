@@ -49,6 +49,12 @@ export function middleware(request) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  // If username exists and user tries to get to "/login" redirect
+  // to home
+  if(username && pathname === '/login') {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
   // If user is logged in, continue with the request
   return NextResponse.next();
 }
