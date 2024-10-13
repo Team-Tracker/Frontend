@@ -52,18 +52,20 @@ export default function LoginPage() {
       // Set cookie with the username (username in this case)
       document.cookie = `username=${username}; path=/; max-age=3600;`; // Cookie will last for 1 hour
 
-      // Navigate to home page
-      console.log("Pushing to '/'");
-      router.push("/");
-      // Force reload if necessary
-      console.log("Reloading...");
-      router.refresh();
-      console.log("Finished reloading :)")
-      // console.log("Pushing to '/'");
-      // router.push("/");
-      // console.log("Reloading...");
-      // router.reload();
-      // console.log("Finished reloading :)")
+      setTimeout(() => {
+        // Navigate to home page
+        console.log("Pushing to '/'");
+        router.push("/");
+        // Force reload if necessary
+        console.log("Reloading...");
+        router.refresh();
+        console.log("Finished reloading :)")
+        // console.log("Pushing to '/'");
+        // router.push("/");
+        // console.log("Reloading...");
+        // router.reload();
+        // console.log("Finished reloading :)")
+      }, 500);
     }
   };
 
