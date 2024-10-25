@@ -5,11 +5,12 @@ import { Card, Text } from "@nextui-org/react";
 const ProjectsPage = () => {
   const router = useRouter();
 
+  // TODO: Create a service that gets all projects that the user is part of
   const projects = [
     { id: '1', name: 'Project 1' },
     { id: '2', name: 'Project 2' },
     { id: '3', name: 'Project 3' },
-  ]; // Replace with actual data source
+  ];
 
   const handleProjectClick = (projectId) => {
     router.push(`/projects/${projectId}`);

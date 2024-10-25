@@ -1,9 +1,9 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
-const ProjectDetailPage = ({ params }) => {
+const ProjectDetailPage = () => {
   const router = useRouter();
-  const { projectid } = params; // Access projectid from URL params
+  const { projectid } = useParams; // Access projectid from URL params
 
   const handleShowScrumboard = () => {
     router.push(`/projects/${projectid}/scrumboard`);

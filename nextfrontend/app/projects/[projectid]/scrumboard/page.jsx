@@ -2,6 +2,7 @@
 
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+import { useParams } from "next/navigation.js";
 import React, { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 
@@ -20,8 +21,8 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   return newColumn;
 };
 
-export default function Home({params}) {
-  const { projectid } = params;
+export default function Home() {
+  const { projectid } = useParams();
   const [state, setState] = useState(initialData);
   const [oldState, setOldState] = useState([]);
   const [droppedState, setDroppedState] = useState([])
