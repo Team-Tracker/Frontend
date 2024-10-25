@@ -30,3 +30,21 @@ a {
   margin-left: 256px; /* This is the width of your sidebar */
   padding: 20px;
 }
+
+.main-content {
+  margin-top: 64px; /* Navbar height */
+  margin-left: 256px; /* Sidebar width */
+  padding: 20px;
+}
+
+.chat-sidebar {
+  background-color: #030303; /* Light gray background for chat sidebar */
+  border-right: 1px solid #000000; /* Optional border to separate */
+  height: 100%; /* Full height */
+}
+
+.chat-content {
+  flex: 1;
+  padding: 16px;
+}
+

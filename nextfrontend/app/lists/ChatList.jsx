@@ -1,36 +1,49 @@
-import React from 'react';
-import ChatCard from '../components/ChatCard';
+"use client"
 
-import teams from '@/Data/data';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-/**
-  This list goes through the data, and creates a TeamCard 
-  with the data
-*/
-const TeamList = () => {
+const ChatList = () => {
+  const router = useRouter();
+  const [chats, setChats] = useState([
+    { id: 1, name: 'Chat 1' },
+    { id: 2, name: 'Chat 2' },
+    { id: 3, name: 'Chat 3' },
+  ]);
+
+
+  const handleChatClick = (chatId) => {
+    router.push(`/chat/${chatId}`); // Redirect to /chat/[chatid]
+  };
+
+  const handleAddChat = () => {
+    console.log("Adding new chat...")
+    // setChats([...chats, {id: 4, name: 'Chat 4'}])
+  }
+
   return (
-    <div style={listStyle}>
-      {teams.map((team, index) => (
-        <ChatCard
-
-        />
-      ))}
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-semibold">Chats</h1>
+        <button
+          onClick={() => handleAddChat()} 
+          className='p-2 bg-black-500 text-white text-2xl rounded hover:bg-black-800'>
+          +
+        </button>
+      </div>
+      <ul>
+        {chats.map((chat) => (
+          <li
+            key={chat.id}
+            onClick={() => handleChatClick(chat.id)}
+            className="cursor-pointer hover:bg-gray-500 p-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            {chat.name}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-/**
-  some basic CSS-formatation for the List:
-  - display flex for listing them in a row
-  - flexWrap for going to the next row
-  - justifyContent flex-start for putting it on 
-    the left side
-*/
-const listStyle = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'space-around',
-  justifyContent: 'flex-start',
-};
-
-export default TeamList;
+export default ChatList;
