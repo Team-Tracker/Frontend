@@ -124,6 +124,7 @@ export default function Home() {
   );
 }
 
+// TODO: load the user stories and the columns seperate, and sort the taskids to the column, with the state
 const initialData = {
   tasks: {
     1: { id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application" },
