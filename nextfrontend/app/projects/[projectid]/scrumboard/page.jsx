@@ -20,7 +20,8 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   return newColumn;
 };
 
-export default function Home() {
+export default function Home({params}) {
+  const { projectid } = params;
   const [state, setState] = useState(initialData);
   const [oldState, setOldState] = useState([]);
   const [droppedState, setDroppedState] = useState([])
