@@ -125,4 +125,15 @@ export const chats = [
 
 ]
 
-  export default teams;
+export const tasks = [
+  {
+    id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application",
+    id: 2, state: 1, creator: "Hockn", assigned: "Kurt", title: "ScrumDemo", content: "Configure Next.js and tailwind ",
+    id: 3, state: 1, creator: "Toni", assigned: "Mr.Perfect", title: "ScrumDemo", content: "Create sidebar navigation menu",
+    id: 4, state: 1, creator: "Toni", assigned: "Toni", title: "ScrumDemo", content: "Create page footer",
+    id: 5, state: 1, creator: "Hockn", assigned: "Marcel Krei", title: "ScrumDemo", content: "Create page navigation menu",
+    id: 6, state: 1, creator: "Hockn", assigned: "Alex", title: "ScrumDemo", content: "Create page layout",
+  },
+]
+
+export default teams;

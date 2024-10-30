@@ -1,0 +1,5 @@
+/* components/Calendar/Calendar.css */
+.Calendar { display: flex; flex-direction: column; }
+.Menu { padding: 1rem; border-bottom: 1px solid #ccc; }
+.Body { padding: 1rem; }
+.CalendarMenu button { margin-right: 0.5rem; }

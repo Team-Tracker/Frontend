@@ -1,6 +1,6 @@
 "use client"
 
-import ChatCard from '../../components/ChatCard';
+import ChatCard from '../../components/Chat/ChatCard';
 
 const ChatDetailPage = ({ params }) => {
 

@@ -7,9 +7,9 @@ const ProjectsPage = () => {
 
   // TODO: Create a service that gets all projects that the user is part of
   const projects = [
-    { id: '1', name: 'Project 1' },
-    { id: '2', name: 'Project 2' },
-    { id: '3', name: 'Project 3' },
+    { id: '1', name: 'Project 1', owner: "dummy1", members: ["dummy1", "dummy2", "dummy3", "dummy4"] },
+    { id: '2', name: 'Project 2', owner: "toni", members: ["toni1", "toni2", "toni3", "toni4"]  },
+    { id: '3', name: 'Project 3', owner: "hockn", members: ["JohnDoe", "JoJo", "testuser3", "testuser4"]  },
   ];
 
   const handleProjectClick = (projectId) => {

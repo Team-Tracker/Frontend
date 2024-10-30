@@ -1,12 +1,15 @@
 "use client";
 
-import { Flex, Heading, Text } from "@chakra-ui/react";
+// import { tasks } from "@/Data/data";
+import { Flex, Heading, Text, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useParams } from "next/navigation.js";
+import { useParams, useRouter } from "next/navigation.js";
 import React, { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 
-const Column = dynamic(() => import("./components/Column.js"), { ssr: false });
+//TODO: 
+
+const Column = dynamic(() => import("../../../components/Projects/Column"), { ssr: false });
 
 const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   const newTaskIds = Array.from(sourceCol.taskIds);
@@ -21,8 +24,9 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   return newColumn;
 };
 
-export default function Home() {
-  const { projectid } = useParams();
+export default function Home({ params }) {
+  const router = useRouter();
+  const projectid = params.projectid;
   const [state, setState] = useState(initialData);
   const [oldState, setOldState] = useState([]);
   const [droppedState, setDroppedState] = useState([])
@@ -93,6 +97,7 @@ export default function Home() {
   };
 
   return (
+    //TODO: A button to go back to the details (cache system)
     <DragDropContext onDragEnd={onDragEnd}>
       <Flex
         flexDir="column"
@@ -102,7 +107,19 @@ export default function Home() {
         color="white-text"
         pb="2rem"
       >
-        <Flex py="4rem" flexDir="column" align="center">
+        <Flex py="4rem" flexDir="column" align="center" position="relative" w="full">
+          <Button
+            position="absolute"
+            top="1rem"
+            left="1rem"
+            onClick={() => router.push(`/projects/${projectid}`)} // Navigates to project details or use `router.back()` for history back
+            colorScheme="blue"
+            variant="outline"
+            size="sm"
+          >
+            Back to Project Details
+          </Button>
+
           <Heading fontSize="3xl" fontWeight={600}>
             React Beautiful Drag and Drop
           </Heading>
@@ -125,6 +142,17 @@ export default function Home() {
 }
 
 // TODO: load the user stories and the columns seperate, and sort the taskids to the column, with the state
+
+// const transformTasksData = (tasksArray) => {
+//   const transformedtasks = {};
+
+//   tasksArray.forEach(task => {
+//     transformedtasks[task.id] = {...task};
+//   });
+// } 
+
+// transformTasksData(tasks);
+
 const initialData = {
   tasks: {
     1: { id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application" },

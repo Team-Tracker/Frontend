@@ -1,9 +1,12 @@
 'use client';
 import { useRouter, useParams } from 'next/navigation';
 
+// TODO: a service that manages a project
 const ProjectDetailPage = () => {
   const router = useRouter();
-  const { projectid } = useParams; // Access projectid from URL params
+  const { projectid } = useParams();
+
+  console.log(projectid)
 
   const handleShowScrumboard = () => {
     router.push(`/projects/${projectid}/scrumboard`);
