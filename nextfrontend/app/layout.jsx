@@ -1,4 +1,6 @@
 import { Rubik } from "next/font/google";
+import { Provider } from "@/components/ui/provider";
+
 import "./globals.css";
 import localFont from "next/font/local";
 
@@ -30,7 +32,9 @@ export default function RootLayout({ children }) {
       <body className={rubik.className}>
         <Navbar />
         <Sidebar />
-        <div className="main-content">{children}</div>
+        <div className="main-content">
+          <Provider>{children}</Provider>
+        </div>
       </body>
     </html>
   );
