@@ -1,42 +1,153 @@
 "use client";
 // /components/Calendar/AppointmentPopup.js
-import { useState } from 'react';
+import { useState } from "react";
+import { HStack } from "@chakra-ui/react";
+import { Field } from "@/components/ui/field";
+import { Input, Stack } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@chakra-ui/react";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select";
 
-export default function AppointmentPopup({ onClose }) {
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [members, setMembers] = useState('');
-  const [description, setDescription] = useState('');
+import "./AddAppointmentPopup.css";
+
+export default function AddAppointmentPopup({ onClose }) {
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [members, setMembers] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle appointment save logic here
-    onClose();  // Close the popup after saving
+    onClose(); // Close the popup after saving
+  };
+
+  /**
+   * TODO: A request to get the members
+   *
+   */
+  const names = {
+    items: [
+      { label: "Joe", value: "Joe" },
+      { label: "Bo Dallas", value: "Bo Dallas" },
+      { label: "Testuser2", value: "Testuser2" },
+      { label: "Testdev1", value: "Testdev1" },
+    ],
   };
 
   return (
-    <div className="AppointmentPopup">
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        
-        <label>Date:</label>
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-        
-        <label>Time:</label>
-        <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
-        
-        <label>Members:</label>
-        <input type="text" value={members} onChange={(e) => setMembers(e.target.value)} placeholder="Add members" />
-        
-        <label>Description:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+    <HStack>
+      <DialogRoot
+        key="add"
+        size="lg"
+        placement="center"
+        motionPreset="slide-in-bottom"
+      >
+        <DialogTrigger asChild>
+          <Button>+</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Adding an Appointment</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <div className="AppointmentPopup">
+              <Field
+                label="Title"
+                errorText="This is not a valid email address"
+              >
+                <Input
+                  placeholder="Title"
+                  size="md"
+                  type="text"
+                  color="black"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </Field>
 
-        <button type="submit">Save Appointment</button>
-        <button type="button" onClick={onClose}>Cancel</button>
-      </form>
-    </div>
+              <Field label="Date" errorText="This is not a valid date">
+                <Input
+                  placeholder="Date"
+                  size="md"
+                  type="date"
+                  color="black"
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </Field>
+
+              <Field label="Time" errorText="This is not a valid time">
+                <Input
+                  placeholder="Time"
+                  size="md"
+                  type="time"
+                  color="black"
+                  onChange={(e) => setTime(e.target.value)}
+                />
+              </Field>
+
+              <Field
+                label="Members"
+              >
+                <Input
+                  placeholder="Members"
+                  size="md"
+                  type="Members"
+                  color="black"
+                  onChange={(e) => setMembers(e.target.value)}
+                />
+              </Field>
+
+              {/* <SelectRoot
+                key="Members"
+                variant="subtle"
+                multiple="true"
+                items={names}
+              >
+                <SelectLabel>Select Members</SelectLabel>
+                <SelectTrigger>
+                  <SelectValueText placeholder="Select members" />
+                </SelectTrigger>
+                <SelectContent>
+                  {names.items.map((name) => (
+                    <SelectItem item={name} key={name.value}>
+                      {name.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot> */}
+              <Field label="Description">
+                <Textarea variant="outline" placeholder="Description" size="md" color="black" onChange={(e) => setDescription(e.target.value)}/>
+              </Field>
+            </div>
+          </DialogBody>
+          <DialogFooter>
+            <DialogActionTrigger asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogActionTrigger>
+            <Button>Save</Button>
+          </DialogFooter>
+          <DialogCloseTrigger />
+        </DialogContent>
+      </DialogRoot>
+    </HStack>
   );
 }
-

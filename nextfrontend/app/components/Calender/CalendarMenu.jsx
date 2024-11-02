@@ -5,6 +5,7 @@ import "./CalendarMenu.css";
 // /components/Calendar/CalendarMenu.js
 import { useState } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
+import AddAppointmentPopup from "./AddAppointmentPopup";
 
 export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDate, setSelectedDate }) {
   const handleNextMonth = () => setSelectedDate(addMonths(selectedDate, 1));
@@ -12,8 +13,8 @@ export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDat
 
   return (
     <div className="CalendarMenu">
-      <button onClick={onAdd}>+</button>
-      
+      <AddAppointmentPopup/>
+
       <div className="MonthSelector">
         <button onClick={handlePrevMonth}>{"<"}</button>
         <span>{format(selectedDate, 'MMMM yyyy')}</span>
@@ -21,7 +22,7 @@ export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDat
       </div>
       
       <button onClick={() => setViewMode(viewMode === 'month' ? 'week' : 'month')}>
-        {viewMode === 'month' ? 'Week View' : 'Month View'}
+        {viewMode === 'month' ? 'Month View' : 'Week View'}
       </button>
     </div>
   );
