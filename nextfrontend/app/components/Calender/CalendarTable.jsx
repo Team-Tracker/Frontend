@@ -3,6 +3,8 @@
 // /components/Calendar/CalendarTable.js
 import { useState, useEffect } from 'react';
 import { eachDayOfInterval, endOfMonth, format, startOfMonth, getDay } from 'date-fns';
+import AppointmentList from './AppointmentList';
+
 import "./CalenderTable.css";
 
 export default function CalendarTable({ viewMode, onDateClick, selectedDate }) {
@@ -23,10 +25,22 @@ export default function CalendarTable({ viewMode, onDateClick, selectedDate }) {
     setDays(paddedDays);
   }, [selectedDate]);
 
+  /**
+   * RenderCells:
+   * renders every cell for the month
+   * 
+   * Format pattern:
+   * 'MMMM d' -> November 2
+   * 'MMM d'  -> Nov 2
+   * 'MM d '  -> 11 2
+   * 'M d'    -> 11 2
+   * 'd'      -> 2
+   */
   const renderCells = () => {
     return days.map((day, index) => (
       <div key={index} className="CalendarCell" onClick={day ? () => onDateClick(day.date) : null}>
-        {day && <span className="DateNumber">{day.displayDate}</span>}
+        {day && <AppointmentList day={format(day.date, 'd')} />}
+        
       </div>
     ));
   };

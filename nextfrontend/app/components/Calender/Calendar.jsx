@@ -5,8 +5,6 @@ import { startOfMonth } from "date-fns";
 
 import CalendarMenu from "./CalendarMenu";
 import CalendarTable from "./CalendarTable";
-import AppointmentPopup from "./AppointmentPopup";
-import AppointmentListPopup from "./AppointmentListPopup";
 
 export default function Calendar() {
   const [viewMode, setViewMode] = useState("month"); // Toggle between 'month' and 'week'
@@ -32,12 +30,12 @@ export default function Calendar() {
             selectedDate={selectedDate}
           />
         </div>
-        {showaddPopup && (
+        {/* {showaddPopup && (
           <AppointmentPopup onClose={() => setShowAddPopup(false)} />
-        )}
-        {showdetailPopup && (
+        )} */}
+        {/* {showdetailPopup && (
           <AppointmentListPopup onClose={() => setShowDetailPopup(false)} />
-        )}
+        )} */}
       </div>
   );
 }

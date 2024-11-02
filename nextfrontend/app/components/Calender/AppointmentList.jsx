@@ -14,18 +14,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const AppointmentListPopup = () => {
+import "./AppointmentList.css";
+
+const AppointmentList = ({day}) => {
   return (
     <HStack>
-      <DialogRoot key= "lg" size = "lg" placement = "center" motionPreset="slide-in-bottom">
+      <DialogRoot key = {day} size = "lg" placement = "center" motionPreset="slide-in-bottom">
         <DialogTrigger asChild>
-          <Button variant="outline" size="lg">
-            Open
-          </Button>
+            <span className="DateNumber">{day}</span>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Dialog Title</DialogTitle>
+            <DialogTitle>Dialog for {day}</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <p>
@@ -46,4 +46,4 @@ const AppointmentListPopup = () => {
   );
 };
 
-export default AppointmentListPopup;
+export default AppointmentList;
