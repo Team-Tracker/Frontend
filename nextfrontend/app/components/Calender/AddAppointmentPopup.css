@@ -20,7 +20,7 @@
   .AppointmentPopup textarea {
     margin-bottom: 16px; /* Space below inputs */
     padding: 10px; /* Inner spacing */
-    border: 1px solid #ccc; /* Light gray border */
+    border: 1px solid #000000; /* Light gray border */
     border-radius: 4px; /* Slightly rounded corners */
     font-size: 14px; /* Font size for inputs */
     transition: border-color 0.3s; /* Smooth transition for border color */
