@@ -13,8 +13,8 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState(startOfMonth(new Date()));
 
   return (
-      <div className="Calendar">
-        <div className="Menu">
+      <div className="flex flex-col">
+        <div className="p-4 border-b border-gray-300">
           <CalendarMenu
             viewMode={viewMode}
             setViewMode={setViewMode}
@@ -23,7 +23,7 @@ export default function Calendar() {
             setSelectedDate={setSelectedDate}
           />
         </div>
-        <div className="Body">
+        <div className="p-4">
           <CalendarTable
             viewMode={viewMode}
             onDateClick={() => setShowDetailPopup(true)}

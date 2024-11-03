@@ -26,8 +26,6 @@ import {
   SelectValueText,
 } from "@/components/ui/select";
 
-import "./AddAppointmentPopup.css";
-
 export default function AddAppointmentPopup({ onClose }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -54,6 +52,7 @@ export default function AddAppointmentPopup({ onClose }) {
     ],
   };
 
+
   return (
     <HStack>
       <DialogRoot
@@ -70,7 +69,7 @@ export default function AddAppointmentPopup({ onClose }) {
             <DialogTitle>Adding an Appointment</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <div className="AppointmentPopup">
+            <div className="bg-white rounded-lg shadow-lg p-5 max-w-md mx-auto flex flex-col">
               <Field
                 label="Title"
                 errorText="This is not a valid email address"
@@ -81,6 +80,7 @@ export default function AddAppointmentPopup({ onClose }) {
                   type="text"
                   color="black"
                   onChange={(e) => setTitle(e.target.value)}
+                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
                 />
               </Field>
 
@@ -91,6 +91,7 @@ export default function AddAppointmentPopup({ onClose }) {
                   type="date"
                   color="black"
                   onChange={(e) => setDate(e.target.value)}
+                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
                 />
               </Field>
 
@@ -101,18 +102,18 @@ export default function AddAppointmentPopup({ onClose }) {
                   type="time"
                   color="black"
                   onChange={(e) => setTime(e.target.value)}
+                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
                 />
               </Field>
 
-              <Field
-                label="Members"
-              >
+              <Field label="Members">
                 <Input
                   placeholder="Members"
                   size="md"
-                  type="Members"
+                  type="text"
                   color="black"
                   onChange={(e) => setMembers(e.target.value)}
+                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
                 />
               </Field>
 
@@ -134,16 +135,26 @@ export default function AddAppointmentPopup({ onClose }) {
                   ))}
                 </SelectContent>
               </SelectRoot> */}
+
               <Field label="Description">
-                <Textarea variant="outline" placeholder="Description" size="md" color="black" onChange={(e) => setDescription(e.target.value)}/>
+                <Textarea
+                  variant="outline"
+                  placeholder="Description"
+                  size="md"
+                  color="black"
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
+                />
               </Field>
             </div>
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="mr-2 bg-gray-900 hover:bg-gray-400">
+                Cancel
+              </Button>
             </DialogActionTrigger>
-            <Button>Save</Button>
+            <Button className="bg-blue-500 text-white hover:bg-blue-600">Save</Button>
           </DialogFooter>
           <DialogCloseTrigger />
         </DialogContent>
