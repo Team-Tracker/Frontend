@@ -39,10 +39,10 @@ export default function LoginPage() {
      * TODO: remove session.js in middleware.js and delete lib/session.js
      */
 
-    const verifylogin = await loginUser(username, password);
+    //const verifylogin = await loginUser(username, password);
     setLoading(false)
 
-    if (verifylogin.ok) {
+    //if (verifylogin.ok) {
       // const data = await response.json();
       // const newSessionId = data.sessionId;
 
@@ -66,7 +66,7 @@ export default function LoginPage() {
         // router.reload();
         // console.log("Finished reloading :)")
       }, 500);
-    }
+    //}
   };
 
   return (
