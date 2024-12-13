@@ -1,18 +1,24 @@
-"use client";
+'use client';
+import { useRouter, useParams } from 'next/navigation';
 
-import { useParams } from 'next/navigation'
+// TODO: a service that manages a project
+const ProjectDetailPage = () => {
+  const router = useRouter();
+  const { projectid } = useParams();
 
-const TeamPage = () => {
-    const params = useParams()
+  console.log(projectid)
 
-    console.log(params)
+  const handleShowScrumboard = () => {
+    router.push(`/teams/${projectid}/scrumboard`);
+  };
 
-    return (
-        <div className="ml-1 mt-1 p-4">
-        <h1 className="text-3xl font-bold">Welcome in the team</h1>
-        {/* Projectlist will be added */}
-        </div>
-    );
+  return (
+    <div>
+      <h1>Project Details for Project ID: {projectid}</h1>
+      <button onClick={handleShowScrumboard}>Show Scrum</button>
+    </div>
+  );
 };
 
-export default TeamPage;
+
+export default ProjectDetailPage;
