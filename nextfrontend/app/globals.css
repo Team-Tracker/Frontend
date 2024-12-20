@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-/* base styles */
-body {
-  background-color: #000e2b; /* Dark blue */
-  color: #ffffff; /* White text for contrast */
-  font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
-}
-
 /* Reset some base styles */
 a {
   color: inherit; /* Links inherit color */
@@ -31,20 +23,36 @@ a {
   padding: 20px;
 }
 
-.main-content {
+/* Default body styles */
+body {
+  background-color: #000e2b; /* Dark blue */
+  color: #ffffff; /* White text for contrast */
+  font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
+}
+
+/* Styles for main layout (root) */
+body.root-layout .main-content {
   margin-top: 64px; /* Navbar height */
   margin-left: 256px; /* Sidebar width */
   padding: 20px;
 }
 
-.chat-sidebar {
-  background-color: #030303; /* Light gray background for chat sidebar */
-  border-right: 1px solid #000000; /* Optional border to separate */
-  height: 100%; /* Full height */
+/* Styles for chat layout */
+body.root-layout .chat-sidebar {
+  background-color: #030303;
+  border-right: 1px solid #000000;
+  height: 100%;
 }
 
-.chat-content {
+body.root-layout .chat-content {
   flex: 1;
   padding: 16px;
 }
 
+
+/* Styles for login layout (minimal adjustments) */
+body.login-layout {
+  background-color: #000e2b; /* Keep dark background */
+  margin: 0; /* No offsets */
+  padding: 0; /* Full-width layout */
+}

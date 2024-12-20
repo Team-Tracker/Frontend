@@ -57,9 +57,9 @@ export default function LoginPage() {
         console.log("Pushing to '/'");
         router.push("/");
         // Force reload if necessary
-        console.log("Reloading...");
-        router.refresh();
-        console.log("Finished reloading :)")
+        // console.log("Reloading...");
+        // router.refresh();
+        // console.log("Finished reloading :)")
         // console.log("Pushing to '/'");
         // router.push("/");
         // console.log("Reloading...");
@@ -70,7 +70,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
         <h2 className="text-3xl font-extrabold text-center text-gray-900">
           Sign in to your account
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="text-white relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="username"
               />
             </div>
@@ -104,7 +104,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="text-white relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
               />
             </div>

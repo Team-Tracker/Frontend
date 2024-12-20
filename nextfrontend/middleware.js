@@ -45,7 +45,7 @@ export function middleware(request) {
   const username = request.cookies.get('username')?.value;
 
   // If no username cookie is found, redirect to login
-  if (!username) {
+  if (!username && protectedRoutes.some((route) => pathname.startsWith(route))) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 

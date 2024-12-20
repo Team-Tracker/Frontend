@@ -12,12 +12,13 @@ export const metadata = {
   description: "Login layout",
 };
 
-export default function RootLayout({ children }) {
+export default function LoginLayout({ children }) {
   return (
     <html lang="en">
-      <body className={rubik.className}>
-        <div className="main-content">{children}</div>
+      <body className="login-layout">
+        <div>{children}</div>
       </body>
     </html>
   );
 }
+

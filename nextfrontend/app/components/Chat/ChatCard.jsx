@@ -13,7 +13,7 @@ const ChatCard = ({ chatId, userId }) => {
     // ws.current = initializeWebSocket(chatId, setMessages);
 
     // Establish WebSocket connection
-    ws.current = new WebSocket("ws://geyser.sytes.net:1234/ws/messages"); // Replace with your actual WebSocket URL
+    ws.current = new WebSocket("ws://localhost:1234/ws/messages"); // Replace with your actual WebSocket URL
 
     // Handle messages from server
     ws.current.onmessage = (event) => {
