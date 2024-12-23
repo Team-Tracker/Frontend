@@ -8,6 +8,7 @@ import teams from '@/Data/data';
   with the data
 */
 const TeamList = () => {
+
   return (
     <div style={listStyle}>
       {teams.map((team, index) => (

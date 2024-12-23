@@ -1,20 +1,35 @@
 'use client';
 import { useRouter, useParams } from 'next/navigation';
+import teams from '@/Data/data';
 
 // TODO: a service that manages a project
 const ProjectDetailPage = () => {
   const router = useRouter();
-  const { projectid } = useParams();
+  const { teamid } = useParams();
 
-  console.log(projectid)
+  // Find the team details by ID
+  const team = teams.find((team) => team.teamid === parseInt(teamid));
+
+  // Render a loading state or 404 if team not found
+  if (!team) {
+      return <div>Loading...</div>;
+  }
+
+  console.log(teamid)
 
   const handleShowScrumboard = () => {
-    router.push(`/teams/${projectid}/scrumboard`);
+    router.push(`/teams/${teamid}/scrumboard`);
   };
 
   return (
     <div>
-      <h1>Project Details for Project ID: {projectid}</h1>
+      <h1>Project Details for {team.teamName}</h1>
+      <p className="mt-4">
+        <strong>Leader:</strong> {team.leaderName}
+      </p>
+      <p className="mt-2">
+        <strong>Description:</strong> {team.description}
+      </p>
       <button onClick={handleShowScrumboard}>Show Scrum</button>
     </div>
   );
