@@ -54,8 +54,8 @@ export default function LoginPage() {
 
       setTimeout(() => {
         // Navigate to home page
-        console.log("Pushing to '/'");
-        router.push("/");
+        console.log("Pushing to '/teams'");
+        router.push("/teams");
         // Force reload if necessary
         // console.log("Reloading...");
         // router.refresh();
@@ -118,7 +118,7 @@ export default function LoginPage() {
               Sign In
             </button>
           </div>
-        </form>
+        </form>j
       </div>
     </div>
   );

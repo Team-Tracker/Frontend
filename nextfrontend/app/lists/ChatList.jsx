@@ -1,9 +1,11 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-const ChatList = () => {
+import AddChatPopUp from '../components/Chat/AddChatPopUp';
+
+const ChatList = ({users}) => {
   const router = useRouter();
   const [chats, setChats] = useState([
     { id: 1, name: 'Chat 1' },
@@ -11,25 +13,21 @@ const ChatList = () => {
     { id: 3, name: 'Chat 3' },
   ]);
 
-
   const handleChatClick = (chatId) => {
     router.push(`/chat/${chatId}`); // Redirect to /chat/[chatid]
   };
 
-  const handleAddChat = () => {
-    console.log("Adding new chat...")
-    // setChats([...chats, {id: 4, name: 'Chat 4'}])
-  }
+  const addNewChat = (newChat) => {
+    setChats((prevChats) => [...prevChats, newChat]); // Update the chat list
+  };
 
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Chats</h1>
-        <button
-          onClick={() => handleAddChat()} 
-          className='p-2 bg-black-500 text-white text-2xl rounded hover:bg-black-800'>
-          +
-        </button>
+        <div className='p-2 bg-black-500 text-white text-2xl rounded hover:bg-black-800'>
+          <AddChatPopUp onAddChat={addNewChat} users={users} />
+        </div>
       </div>
       <ul>
         {chats.map((chat) => (
@@ -47,3 +45,4 @@ const ChatList = () => {
 };
 
 export default ChatList;
+

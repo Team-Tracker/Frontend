@@ -26,7 +26,7 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 
 export default function Home({ params }) {
   const router = useRouter();
-  const projectid = params.projectid;
+  const teamid = params.teamid;
   const [state, setState] = useState(initialData);
   const [oldState, setOldState] = useState([]);
   const [droppedState, setDroppedState] = useState([])
@@ -112,7 +112,7 @@ export default function Home({ params }) {
             position="absolute"
             top="1rem"
             left="1rem"
-            onClick={() => router.push(`/teams/${projectid}`)} // Navigates to project details or use `router.back()` for history back
+            onClick={() => router.push(`/teams/${teamid}`)} // Navigates to project details or use `router.back()` for history back
             colorScheme="blue"
             variant="outline"
             size="sm"

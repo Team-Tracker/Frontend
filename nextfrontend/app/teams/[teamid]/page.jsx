@@ -1,6 +1,5 @@
 'use client';
 import { useRouter, useParams } from 'next/navigation';
-import teams from '@/Data/data';
 
 import teams from '@/Data/data';
 
@@ -14,38 +13,30 @@ const ProjectDetailPage = () => {
 
   // Render a loading state or 404 if team not found
   if (!team) {
-      return <div>Loading...</div>;
+    return <div>Loading...</div>;
   }
 
-  console.log(teamid)
+  console.log(teamid);
 
   const handleShowScrumboard = () => {
     router.push(`/teams/${teamid}/scrumboard`);
   };
 
-  const getId = () => {
-    teams.map((team, index) => {
-
-    })
-  }
+  const getName = () => {
+    const foundTeam = teams.find((team) => team.teamid === parseInt(teamid));
+    if (foundTeam) {
+      console.log('Found: ' + foundTeam.teamName);
+      return foundTeam.teamName;
+    }
+    return 'Unknown Project';
+  };
 
   return (
     <div>
-<<<<<<< HEAD
-      <h1>Project Details for {team.teamName}</h1>
-      <p className="mt-4">
-        <strong>Leader:</strong> {team.leaderName}
-      </p>
-      <p className="mt-2">
-        <strong>Description:</strong> {team.description}
-      </p>
-=======
-      <h1>Project Details for Project: {getId}</h1>
->>>>>>> refs/remotes/origin/chatfunction
+      <h1>Project Details for Project: {getName()}</h1>
       <button onClick={handleShowScrumboard}>Show Scrum</button>
     </div>
   );
 };
-
 
 export default ProjectDetailPage;

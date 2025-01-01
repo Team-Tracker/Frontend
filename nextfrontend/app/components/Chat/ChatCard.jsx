@@ -1,26 +1,37 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-// import { initializeWebSocket, sendMessageHttp } from '../services/chatManagement';
 
 const ChatCard = ({ chatId, userId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [sessionId, setSessionId] = useState(null); // Store session ID
   const ws = useRef(null);
 
   useEffect(() => {
-    //! Creating Websocket and message handling (will be updated later...)
-    // ws.current = initializeWebSocket(chatId, setMessages);
-
     // Establish WebSocket connection
-    ws.current = new WebSocket("ws://localhost:1234/ws/messages"); // Replace with your actual WebSocket URL
+    ws.current = new WebSocket("ws://localhost:1234/ws"); // Replace with your actual WebSocket URL
+
+    ws.current.onopen = () => {
+      console.log("WebSocket connection established.");
+    };
 
     // Handle messages from server
     ws.current.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      if (message.chat_id === chatId) {
+
+      // Handle session ID message
+      if (message.sessionId) {
+        setSessionId(message.sessionId);
+        console.log("Session ID received:", message.sessionId);
+      } else {
+        // Handle chat messages
         setMessages((prevMessages) => [...prevMessages, message]);
       }
+    };
+
+    ws.current.onerror = (error) => {
+      console.error("WebSocket error:", error);
     };
 
     // Cleanup on component unmount
@@ -29,56 +40,41 @@ const ChatCard = ({ chatId, userId }) => {
         ws.current.close();
       }
     };
-  }, [chatId]);
+  }, []);
 
-  // Function to send a new message
+  // Function to send a new message via HTTP request
   const sendMessage = async () => {
-    if (newMessage.trim() === "") return;
+    if (newMessage.trim() === "" || !sessionId) return;
 
-    const messageObj = {
-      user_id: userId,
-      chat_id: chatId,
-      text: newMessage,
-    };
+    // Construct the HTTP request URL with query parameters
+    const requestUrl = `http://localhost:1234/send?user_id=${userId}&chat_id=${chatId}&text=${encodeURIComponent(
+      newMessage
+    )}&session_id=${sessionId}`;
 
-    //! Outsourced function
-    //? response = await sendMessageHttp(messageObj);
-    //? if(response.ok) {
-    //?   displayMessage(messageObj)
-    //? }
-    //
-
-    const response = await fetch(
-      `http://geyser.sytes.net:1234/send?user_id=${userId}&chat_id=${chatId}&text=${newMessage}`,
-      {
+    try {
+      const response = await fetch(requestUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to send message:", response.status);
+        throw new Error("Failed to send message");
+      } else {
+        console.log("Message sent successfully:", newMessage);
       }
-    );
-
-    if (!response.ok) {
-      console.log(response.status);
-      throw new Error("Failed to send message");
-    } else {
-      // displayMessage(messageObj)
+      setNewMessage(""); // Clear input after sending
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
-    setNewMessage(""); // Clear input after sending
-  };
-
-  const handleFileUploadClick = async () => {
-    console.log("Uploading your file...");
   };
 
   return (
     <div className="flex flex-col h-full max-h-[85vh]">
-      {/* Increased height */}
       <h2 className="text-xl font-semibold mb-4 table-fixed">Chat {chatId}</h2>
       <div className="flex-grow overflow-y-auto mb-4">
         <ul className="space-y-2">
-          {messages.map((message) => (
-            <li key={message.id} className="mb-2">
+          {messages.map((message, index) => (
+            <li key={index} className="mb-2">
               <strong>User {message.user_id}:</strong> {message.text}
             </li>
           ))}
