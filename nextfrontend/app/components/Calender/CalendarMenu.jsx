@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { format, addMonths, subMonths } from 'date-fns';
 import AddAppointmentPopup from "./AddAppointmentPopup";
 
-export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDate, setSelectedDate }) {
+export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDate, setSelectedDate, users }) {
   const handleNextMonth = () => setSelectedDate(addMonths(selectedDate, 1));
   const handlePrevMonth = () => setSelectedDate(subMonths(selectedDate, 1));
 
   return (
     <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300 text-black">
-      <AddAppointmentPopup />
+      <AddAppointmentPopup users={users}/>
 
       <div className="flex items-center text-lg font-bold space-x-4">
         <button
