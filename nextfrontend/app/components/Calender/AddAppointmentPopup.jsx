@@ -1,6 +1,6 @@
 "use client";
 // /components/Calendar/AppointmentPopup.js
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HStack } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input, Stack } from "@chakra-ui/react";
@@ -47,22 +47,39 @@ export default function AddAppointmentPopup({ onClose, users }) {
     })),
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle appointment save logic here
-    onClose(); // Close the popup after saving
-  };
-
   // Handle user selection toggling
-  const handleUserSelect = (userId) => {
-    setSelectedUsers(
-      (prevSelected) =>
-        prevSelected.includes(userId)
-          ? prevSelected.filter((id) => id !== userId) // Deselect user
-          : [...prevSelected, userId] // Select user
-    );
-    console.log("Selected users: ", selectedUsers);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const requestData = {
+      title,
+      date,
+      time,
+      members: selectedUsers,
+      description,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:1234/calendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to save appointment: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      console.log("Appointment saved successfully:", result);
+  
+      onClose(); // Close the popup after saving
+    } catch (error) {
+      console.error("Error saving appointment:", error);
+      alert("Failed to save the appointment. Please try again.");
+    }
   };
+  
 
   return (
     <HStack>
@@ -157,7 +174,7 @@ export default function AddAppointmentPopup({ onClose, users }) {
                 Cancel
               </Button>
             </DialogActionTrigger>
-            <Button className="bg-blue-500 text-white hover:bg-blue-600">
+            <Button className="bg-blue-500 text-white hover:bg-blue-600" onClick={handleSubmit}>
               Save
             </Button>
           </DialogFooter>

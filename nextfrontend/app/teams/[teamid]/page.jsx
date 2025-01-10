@@ -8,6 +8,14 @@ const ProjectDetailPage = () => {
   const router = useRouter();
   const { teamid } = useParams();
 
+  // TODO: Add memberlist, add a Component, which displays your tasks, add a Component which does chat
+  /** 
+   * TODO: MenuBar which shows teamname, link to scrumboard and displays a dropdown "Window"
+   * "Window": Enable or disable components, chat and tasks or members.
+   *  
+  */
+  
+
   // Find the team details by ID
   const team = teams.find((team) => team.teamid === parseInt(teamid));
 

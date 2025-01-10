@@ -127,7 +127,7 @@ export const chats = [
 
 export const tasks = [
   {
-    id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application",
+    id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application :)",
     id: 2, state: 1, creator: "Hockn", assigned: "Kurt", title: "ScrumDemo", content: "Configure Next.js and tailwind ",
     id: 3, state: 1, creator: "Toni", assigned: "Mr.Perfect", title: "ScrumDemo", content: "Create sidebar navigation menu",
     id: 4, state: 1, creator: "Toni", assigned: "Toni", title: "ScrumDemo", content: "Create page footer",
