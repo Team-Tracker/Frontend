@@ -1,5 +1,6 @@
 'use client';
 import { useRouter, useParams } from 'next/navigation';
+import ChatCard from '@/app/components/Chat/ChatCard';
 
 import teams from '@/Data/data';
 
@@ -17,6 +18,8 @@ const ProjectDetailPage = () => {
   
 
   // Find the team details by ID
+  // TODO: replace with route later...
+  // team muss eine chatID zurück geben
   const team = teams.find((team) => team.teamid === parseInt(teamid));
 
   // Render a loading state or 404 if team not found

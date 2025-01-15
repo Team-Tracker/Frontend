@@ -1,10 +1,12 @@
+import Link from "next/link"
+
 import { CheckboxGroup, Fieldset } from "@chakra-ui/react"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const TeamsMenuBar = () => {
     return (
         <div className="MenuBar">
-            <nav className="bg-gray-800 p-4 shadow-lg fixed top-0 left-0 w-full z-10">
+            <nav className="bg-gray-800 p-4 shadow-lg top-0 left-0 w-full z-10">
                 <div className="container mx-auto flex justify-between items-center">
                     <Link href="/" className="text-white text-lg font-semibold po hover:text-gray-300">
                         Home
