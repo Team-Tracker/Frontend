@@ -3,22 +3,55 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { getChats } from '../services/chatManagement';
 import AddChatPopUp from '../components/Chat/AddChatPopUp';
 
 const ChatList = ({users}) => {
   const router = useRouter();
-  const [chats, setChats] = useState([
-    { id: 1, name: 'Chat 1' },
-    { id: 2, name: 'Chat 2' },
-    { id: 3, name: 'Chat 3' },
-  ]);
+  const [chats, setChats] = useState([]);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const userId = getCookie('userId');
+
+        if (userId) {
+          const response = await getChats(userId); 
+
+          if (response.ok) {
+            const fetchedChats = await response.json();
+            setChats(fetchedChats);
+          } else {
+            console.error('Error fetching chats:', response.statusText);
+          }
+        } else {
+          console.error('User ID not found in cookies.');
+        }
+      } catch (error) {
+        console.error('Error fetching chats:', error);
+      }
+    };
+
+    fetchChats();
+  }, []); 
 
   const handleChatClick = (chatId) => {
-    router.push(`/chat/${chatId}`); // Redirect to /chat/[chatid]
+    router.push(`/chat/${chatId}`);
   };
 
   const addNewChat = (newChat) => {
-    setChats((prevChats) => [...prevChats, newChat]); // Update the chat list
+    setChats((prevChats) => [...prevChats, newChat]);
+  };
+
+  const getCookie = (name) => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
   };
 
   return (

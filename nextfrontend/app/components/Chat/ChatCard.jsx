@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import sendMessage, { registerchat } from "@/app/services/chatManagement";
 
 const ChatCard = ({ chatId, userId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [sessionId, setSessionId] = useState(null); // Store session ID
+  const [sessionId, setSessionId] = useState(null);
   const ws = useRef(null);
 
   useEffect(() => {
     // Establish WebSocket connection
-    ws.current = new WebSocket("ws://localhost:1234/ws"); // Replace with your actual WebSocket URL
+    ws.current = new WebSocket("ws://lgeyser.duckdns.org:8443/ws"); // Replace with your actual WebSocket URL
 
     ws.current.onopen = () => {
       console.log("WebSocket connection established.");
@@ -20,9 +21,9 @@ const ChatCard = ({ chatId, userId }) => {
     ws.current.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
-      // Handle session ID message
       if (message.sessionId) {
         setSessionId(message.sessionId);
+        registerchat(userId, sessionId)
         console.log("Session ID received:", message.sessionId);
       } else {
         // Handle chat messages
@@ -40,21 +41,11 @@ const ChatCard = ({ chatId, userId }) => {
         ws.current.close();
       }
     };
-  }, []);
+  }, [userId]); // Dependency on userId for potential future use
 
-  // Function to send a new message via HTTP request
-  const sendMessage = async () => {
-    if (newMessage.trim() === "" || !sessionId) return;
-
-    // Construct the HTTP request URL with query parameters
-    const requestUrl = `http://localhost:1234/send?user_id=${userId}&chat_id=${chatId}&text=${encodeURIComponent(
-      newMessage
-    )}&session_id=${sessionId}`;
-
+  const send = async () => {
     try {
-      const response = await fetch(requestUrl, {
-        method: "POST",
-      });
+      const response = await sendMessage(userId, chatId, newMessage);
 
       if (!response.ok) {
         console.error("Failed to send message:", response.status);
@@ -62,6 +53,8 @@ const ChatCard = ({ chatId, userId }) => {
       } else {
         console.log("Message sent successfully:", newMessage);
       }
+
+      setMessages((prevMessages) => [...prevMessages, { user_id: userId, text: newMessage }]);
       setNewMessage(""); // Clear input after sending
     } catch (error) {
       console.error("Error sending message:", error);
@@ -90,7 +83,7 @@ const ChatCard = ({ chatId, userId }) => {
           className="border p-2 rounded flex-grow text-black"
         />
         <button
-          onClick={sendMessage}
+          onClick={send}
           className="ml-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
         >
           Send

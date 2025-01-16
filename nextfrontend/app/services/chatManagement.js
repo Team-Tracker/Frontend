@@ -1,3 +1,5 @@
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 // const WebSocket = require('ws');
 let wsInstance; // This will hold the WebSocket instance
 
@@ -31,9 +33,9 @@ export const initializeWebSocket = (chatId, setMessages) => {
 
 //* Outsourced function from ChatCard for 
 //* sending messages on 
-export const sendMessageHttp = async (messageObj) => {
+export default async function sendMessage(user_id, chat_id, text) {
   try {
-    const response = await fetch(`http://geyser.sytes.net:1234/send?user_id=${messageObj.userId}&chat_id=${messageObj.chatId}&text=${messageObj.newMessage}`, {
+    const response = await fetch(`${baseUrl}/main/send?userId=${user_id}&chatId=${chat_id}&text=${text}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,8 +48,54 @@ export const sendMessageHttp = async (messageObj) => {
 
     // if the response is ok, than it should display the message 
     // that is saved in ChatCard
-    return response.status;
+    return response;
   } catch (error) {
     console.error('Error sending message via HTTP:', error);
   }
 };
+
+export async function registerchat(user_id, session_id) {
+  const response = await fetch(
+    `${baseUrl}/chat/register?userId=${user_id}&sessionId=${session_id}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to register");
+  }
+
+  return response;
+}
+
+export async function createChat(user_id, other_user_id) {
+  const response = await fetch (
+    `${baseUrl}/chat/create?userId=${user_id}&otherUserId=${other_user_id}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json"}
+    }
+  )
+  if (!response.ok) {
+    throw new Error("Failed to create Chat");
+  }
+
+  return response;
+}
+
+export async function getChats(user_id) {
+  const response = await fetch(
+    `${baseUrl}/chat/chats?userId=${user_id}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json"}
+    }
+  )
+  if (!response.ok) {
+    throw new Error("Failed to get chats");
+  }
+
+  return response;
+}

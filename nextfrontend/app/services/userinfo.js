@@ -1,11 +1,10 @@
-export async function loginUser(username, password) {
+export async function getUserId(username) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const response = await fetch(
-      `${baseUrl}/auth/login?username=${username}&password=${password}`,
+      `${baseUrl}/user/resolveId?username=${username}`,
       {
-        method: "POST",
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
       }
     );
 

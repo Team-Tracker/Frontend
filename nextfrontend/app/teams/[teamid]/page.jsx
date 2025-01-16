@@ -1,13 +1,15 @@
 'use client';
 import { useRouter, useParams } from 'next/navigation';
 import ChatCard from '@/app/components/Chat/ChatCard';
-
-import teams from '@/Data/data';
+import { getProject } from '@/app/services/teamsManagement';
+import { useState, useEffect } from 'react';
 
 // TODO: a service that manages a project
 const ProjectDetailPage = () => {
   const router = useRouter();
   const { teamid } = useParams();
+
+  const [team, setTeam] = useState(null);
 
   // TODO: Add memberlist, add a Component, which displays your tasks, add a Component which does chat
   /** 
@@ -20,7 +22,14 @@ const ProjectDetailPage = () => {
   // Find the team details by ID
   // TODO: replace with route later...
   // team muss eine chatID zurück geben
-  const team = teams.find((team) => team.teamid === parseInt(teamid));
+  useEffect(() => {
+    const fetchData = async () => {
+      const team = await getProject();
+      setTeam(team);
+    }
+
+    fetchData()
+  }, [])
 
   // Render a loading state or 404 if team not found
   if (!team) {
@@ -33,18 +42,9 @@ const ProjectDetailPage = () => {
     router.push(`/teams/${teamid}/scrumboard`);
   };
 
-  const getName = () => {
-    const foundTeam = teams.find((team) => team.teamid === parseInt(teamid));
-    if (foundTeam) {
-      console.log('Found: ' + foundTeam.teamName);
-      return foundTeam.teamName;
-    }
-    return 'Unknown Project';
-  };
-
   return (
     <div>
-      <h1>Project Details for Project: {getName()}</h1>
+      <h1>Project Details for Project: {teamid}</h1>
       <button onClick={handleShowScrumboard}>Show Scrum</button>
     </div>
   );
