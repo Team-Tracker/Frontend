@@ -1,47 +1,47 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import sendMessage, { registerchat } from "@/app/services/chatManagement";
+import { sendMessage, registerchat } from "@/app/services/chatManagement";
 
 const ChatCard = ({ chatId, userId }) => {
+  const wsRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sessionId, setSessionId] = useState(null);
-  const ws = useRef(null);
 
   useEffect(() => {
-    // Establish WebSocket connection
-    ws.current = new WebSocket("ws://lgeyser.duckdns.org:8443/ws"); // Replace with your actual WebSocket URL
+    // Turn off AddBlocker
+    const socket = new WebSocket("wss://lgeyser.duckdns.org:8443/ws");
+    wsRef.current  = socket;
 
-    ws.current.onopen = () => {
-      console.log("WebSocket connection established.");
-    };
+    socket.addEventListener('message', (event) => {
+      console.log(event.data);
+    })
 
     // Handle messages from server
-    ws.current.onmessage = (event) => {
+    socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
       if (message.sessionId) {
         setSessionId(message.sessionId);
-        registerchat(userId, sessionId)
+        registerchat(userId, message.sessionId)
         console.log("Session ID received:", message.sessionId);
       } else {
-        // Handle chat messages
         setMessages((prevMessages) => [...prevMessages, message]);
       }
     };
 
-    ws.current.onerror = (error) => {
+    socket.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
 
     // Cleanup on component unmount
     return () => {
-      if (ws.current) {
-        ws.current.close();
+      if (socket) {
+        socket.close();
       }
     };
-  }, [userId]); // Dependency on userId for potential future use
+  }, [userId]);
 
   const send = async () => {
     try {
