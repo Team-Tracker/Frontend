@@ -1,5 +1,6 @@
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 export async function getUserId(username) {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const response = await fetch(
       `${baseUrl}/user/resolveId?username=${username}`,
       {
@@ -13,4 +14,20 @@ export async function getUserId(username) {
     }
 
     return response;
+}
+
+export async function getUserName(user_id) {
+  const response = await fetch(
+    `${baseUrl}/user/resolveUsername?id=${user_id}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+
+  return response;
 }

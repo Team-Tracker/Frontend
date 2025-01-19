@@ -1,8 +1,11 @@
 'use client';
+
 import { useRouter, useParams } from 'next/navigation';
 import ChatCard from '@/app/components/Chat/ChatCard';
 import { getProject } from '@/app/services/teamsManagement';
 import { useState, useEffect } from 'react';
+
+import { useMenu } from './MenuContext';
 
 // TODO: a service that manages a project
 const ProjectDetailPage = () => {
@@ -10,6 +13,8 @@ const ProjectDetailPage = () => {
   const { teamid } = useParams();
 
   const [team, setTeam] = useState(null);
+
+  const { selectedAction } = useMenu()
 
   // TODO: Add memberlist, add a Component, which displays your tasks, add a Component which does chat
   /** 
@@ -45,6 +50,9 @@ const ProjectDetailPage = () => {
   return (
     <div>
       <h1>Project Details for Project: {teamid}</h1>
+      <p>Feature 1: {selectedAction.enableTasks ? "Enabled" : "Disabled"}</p>
+      <p>Feature 2: {selectedAction.enableChat ? "Enabled" : "Disabled"}</p>
+      <p>Feature 3: {selectedAction.enableMemberList ? "Enabled" : "Disabled"}</p>
       <button onClick={handleShowScrumboard}>Show Scrum</button>
     </div>
   );

@@ -1,33 +1,81 @@
+"use client";
+
 import Link from "next/link";
-import { CheckboxGroup, Fieldset, Select, SelectItem } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from "@/components/ui/menu";
+
+import { useMenu } from "../teams/[teamid]/MenuContext";
 
 const TeamsMenuBar = () => {
+  const { selectedAction, setSelectedAction } = useMenu();
+  console.log("Selection: ", selectedAction.enableTasks);
+
+
+  const handleCheckBoxToogle = (action, checked) => {
+    // console.log(`${action}: ${checked}`);
+
+    const isChecked = typeof checked === "object" ? !!checked.checked : !!checked;
+
+    setSelectedAction((prev) => ({
+      ...prev,
+      [action]: isChecked,
+    }));
+    // console.log("Logging: ", selectedAction)
+  }
+
   return (
     <nav className="bg-gray-900 text-white shadow-lg fixed w-full z-50">
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
-        <Link href="/" className="text-white text-lg font-semibold hover:text-gray-300">
-          Home
-        </Link>
+        <Flex gap={4} align={"flex-start"}>
+          <Link href="/teams" className="text-white text-lg font-semibold hover:text-gray-300">
+            Go back
+          </Link>
 
-        {/* Framework Selection */}
-        <div className="relative">
-          <Select placeholder="Select framework">
-            <SelectItem value="react">
-              <CheckboxGroup defaultValue={["react"]} name="framework">
-                <Fieldset.Legend fontSize="sm" mb="2">
-                  Select framework
-                </Fieldset.Legend>
-                <Fieldset.Content className="space-y-1">
-                  <Checkbox value="react">React</Checkbox>
-                  <Checkbox value="svelte">Svelte</Checkbox>
-                  <Checkbox value="vue">Vue</Checkbox>
-                  <Checkbox value="angular">Angular</Checkbox>
-                </Fieldset.Content>
-              </CheckboxGroup>
-            </SelectItem>
-          </Select>
-        </div>
+          <MenuRoot closeOnSelect={false}>
+            <MenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                View
+              </Button>
+            </MenuTrigger>
+            <MenuContent>
+              <MenuItem value="currentTask">
+                <Checkbox 
+                  value = "currentTask"
+                  checked = {selectedAction.enableTasks}
+                  onCheckedChange = {(event) => handleCheckBoxToogle("enableTasks", event)}
+                >
+                  Show Tasks
+                </Checkbox>
+              </MenuItem>
+              <MenuItem value="teamchat">
+                <Checkbox 
+                  value = "teamchat"
+                  checked = {selectedAction.enableChat}
+                  onCheckedChange = {(event) => handleCheckBoxToogle("enableChat", event)}
+                >
+                  Teamchat
+                </Checkbox>
+              </MenuItem>
+              <MenuItem value="memberlist">
+                <Checkbox 
+                  value = "memberlist"
+                  checked = {selectedAction.enableMemberList}
+                  onCheckedChange = {(event) => handleCheckBoxToogle("enableMemberList", event)}
+                >
+                  Memberlist
+                </Checkbox>
+              </MenuItem>
+            </MenuContent>
+          </MenuRoot>
+        </Flex>
       </div>
     </nav>
   );

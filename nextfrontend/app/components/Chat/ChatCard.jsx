@@ -2,31 +2,45 @@
 
 import { useState, useEffect, useRef } from "react";
 import { sendMessage, registerchat } from "@/app/services/chatManagement";
+import { getUserName } from "@/app/services/userinfo";
 
 const ChatCard = ({ chatId, userId }) => {
   const wsRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sessionId, setSessionId] = useState(null);
+  const [userNames, setUserNames] = useState({});
 
   useEffect(() => {
     // Turn off AddBlocker
     const socket = new WebSocket("wss://lgeyser.duckdns.org:8443/ws");
-    wsRef.current  = socket;
+    wsRef.current = socket;
 
-    socket.addEventListener('message', (event) => {
+    socket.addEventListener("message", (event) => {
       console.log(event.data);
-    })
+    });
 
-    // Handle messages from server
-    socket.onmessage = (event) => {
+    socket.onmessage = async (event) => {
       const message = JSON.parse(event.data);
+      console.log("Saved UserID: ", userId);
+      console.log("Message recieved form socket: ", message);
 
       if (message.sessionId) {
         setSessionId(message.sessionId);
-        registerchat(userId, message.sessionId)
-        console.log("Session ID received:", message.sessionId);
+        await registerchat(userId, message.sessionId);
       } else {
+        if (!userNames[message.user_id]) {
+          try {
+            const response = await getUserName(message.user_id);
+            const username = await response.text();
+            console.log("Result: ", userNames[message.user_id]);
+
+            setUserNames((prev) => ({ ...prev, [message.user_id]: username }));
+            console.log("Users: ", userNames);
+          } catch (err) {
+            console.error("Error fetching username:", err);
+          }
+        }
         setMessages((prevMessages) => [...prevMessages, message]);
       }
     };
@@ -54,8 +68,7 @@ const ChatCard = ({ chatId, userId }) => {
         console.log("Message sent successfully:", newMessage);
       }
 
-      setMessages((prevMessages) => [...prevMessages, { user_id: userId, text: newMessage }]);
-      setNewMessage(""); // Clear input after sending
+      setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -66,11 +79,39 @@ const ChatCard = ({ chatId, userId }) => {
       <h2 className="text-xl font-semibold mb-4 table-fixed">Chat {chatId}</h2>
       <div className="flex-grow overflow-y-auto mb-4">
         <ul className="space-y-2">
-          {messages.map((message, index) => (
-            <li key={index} className="mb-2">
-              <strong>User {message.user_id}:</strong> {message.text}
-            </li>
-          ))}
+          {messages.map((message, index) => {
+            console.log("Type of userId:", typeof userId, "Value:", userId);
+            console.log(
+              "Type of message.user_id:",
+              typeof message.user_id,
+              "Value:",
+              message.user_id
+            );
+
+            const isOwnMessage = Number(message.user_id) === Number(userId);
+            console.log("Compare: ", isOwnMessage);
+            const username = userNames[message.user_id] || "Loading...";
+
+            return (
+              <li
+                key={index}
+                className={`mb-2 flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`p-2 rounded shadow-md max-w-xs break-words text-white ${
+                    isOwnMessage
+                      ? "bg-blue-500 text-right"
+                      : "bg-gray-500 text-left"
+                  }`}
+                >
+                  <strong className="block mb-1">
+                    {isOwnMessage ? "You" : username}
+                  </strong>
+                  {message.text}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
       {/* Input Bar at the Bottom */}

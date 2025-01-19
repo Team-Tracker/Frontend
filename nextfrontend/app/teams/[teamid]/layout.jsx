@@ -3,9 +3,9 @@ import { Rubik } from "next/font/google";
 import localFont from "next/font/local";
 
 import TeamsMenuBar from "@/app/components/TeamsMenuBar";
+import { MenuProvider } from "./MenuContext";
 
 const rubik = Rubik({ subsets: ["latin"] });
-
 
 export const metadata = {
   title: "Team",
@@ -14,17 +14,14 @@ export const metadata = {
 
 export default function TeamLayout({ children }) {
   return (
-    <div className="flex h-screen">
-        <div className="team-navbar"> 
-            <TeamsMenuBar/>
-        </div>        
-        <div>
-
+    <MenuProvider>
+      <div className="flex h-screen">
+        <div className="team-navbar">
+          <TeamsMenuBar />
         </div>
-        <div className="team-content">
-            {children}
-        </div>
-    </div>
-
+        <div></div>
+        <div className="team-content">{children}</div>
+      </div>
+    </MenuProvider>
   );
 }
