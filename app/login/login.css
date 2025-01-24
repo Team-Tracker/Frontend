@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* base styles */
+body {
+  background-color: #000e2b; /* Dark blue */
+  color: #000000; /* White text for contrast */
+  font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
+
+  /* Flexbox for centering content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensure body takes full viewport height */
+  margin: 0; /* Remove any default body margin */
+}
+
+/* Reset some base styles */
+a {
+  color: inherit; /* Links inherit color */
+  text-decoration: none; /* No underline on links */
+}
+
+/* Ensure all positioned elements respect z-index layering */
+.z-10 {
+  z-index: 10;
+}
+
+.z-5 {
+  z-index: 5;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
