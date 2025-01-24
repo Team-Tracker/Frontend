@@ -1,0 +1,20 @@
+.CalendarCell {
+    background-color: white;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0.5rem;
+    min-height: 80px;
+    text-align: left;
+  }
+  
+  .DateNumber {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #555;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }

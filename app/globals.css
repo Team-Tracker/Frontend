@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset some base styles */
+a {
+  color: inherit; /* Links inherit color */
+  text-decoration: none; /* No underline on links */
+}
+
+/* Ensure all positioned elements respect z-index layering */
+.z-10 {
+  z-index: 10;
+}
+
+.z-5 {
+  z-index: 5;
+}
+
+.main-content {
+  margin-top: 64px; /* This is the height of your navbar */
+  margin-left: 256px; /* This is the width of your sidebar */
+  padding: 20px;
+}
+
+/* Default body styles */
+body {
+  background-color: #000e2b; /* Dark blue */
+  color: #ffffff; /* White text for contrast */
+  font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
+}
+
+/* Styles for main layout (root) */
+body.root-layout .main-content {
+  margin-top: 64px; /* Navbar height */
+  margin-left: 256px; /* Sidebar width */
+  padding: 20px;
+}
+
+/* Styles for chat layout */
+body.root-layout .chat-sidebar {
+  background-color: #030303;
+  border-right: 1px solid #000000;
+  height: 100%;
+}
+
+body.root-layout .chat-content {
+  flex: 1;
+  padding: 16px;
+}
+
+
+/* Styles for login layout (minimal adjustments) */
+body.login-layout {
+  background-color: #000e2b; /* Keep dark background */
+  margin: 0; /* No offsets */
+  padding: 0; /* Full-width layout */
+}
