@@ -29,13 +29,13 @@ const ChatCard = ({ chatId, userId }) => {
         setSessionId(message.sessionId);
         await registerchat(userId, message.sessionId);
       } else {
-        if (!userNames[message.user_id]) {
+        if (!userNames[message.userid]) {
           try {
-            const response = await getUserName(message.user_id);
+            const response = await getUserName(message.userid);
             const username = await response.text();
-            console.log("Result: ", userNames[message.user_id]);
+            console.log("Result: ", userNames[message.userid]);
 
-            setUserNames((prev) => ({ ...prev, [message.user_id]: username }));
+            setUserNames((prev) => ({ ...prev, [message.userid]: username }));
             console.log("Users: ", userNames);
           } catch (err) {
             console.error("Error fetching username:", err);
@@ -82,15 +82,15 @@ const ChatCard = ({ chatId, userId }) => {
           {messages.map((message, index) => {
             console.log("Type of userId:", typeof userId, "Value:", userId);
             console.log(
-              "Type of message.user_id:",
-              typeof message.user_id,
+              "Type of message.userid:",
+              typeof message.userid,
               "Value:",
-              message.user_id
+              message.userid
             );
 
-            const isOwnMessage = Number(message.user_id) === Number(userId);
+            const isOwnMessage = Number(message.userid) === Number(userId);
             console.log("Compare: ", isOwnMessage);
-            const username = userNames[message.user_id] || "Loading...";
+            const username = userNames[message.userid] || "Loading...";
 
             return (
               <li
