@@ -1,7 +1,7 @@
 const MemberList = () => {
     return ( 
-        <div>
-            
+        <div color="red">
+            <p>MemberList...</p>
         </div>
      );
 }

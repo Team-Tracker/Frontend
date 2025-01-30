@@ -34,8 +34,8 @@ const TeamsMenuBar = () => {
   return (
     <nav className="bg-gray-900 text-white shadow-lg fixed w-full z-50">
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
-        <Flex gap={4} align={"flex-start"}>
-          <Link href="/teams" className="text-white text-lg font-semibold hover:text-gray-300">
+        <Flex gap={5} align={"flex-start"}>
+          <Link href="/teams" className="text-white start-2 justify-start text-lg font-semibold hover:text-gray-300">
             Go back
           </Link>
 

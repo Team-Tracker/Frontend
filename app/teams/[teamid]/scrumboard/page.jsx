@@ -156,7 +156,7 @@ export default function Home({ params }) {
 const initialData = {
   tasks: {
     1: { id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application" },
-    2: { id: 2, state: 1, creator: "Hockn", assigned: "Kurt", title: "ScrumDemo", content: "Configure Next.js and tailwind " },
+    2: { id: 2, state: 2, creator: "Hockn", assigned: "Kurt", title: "ScrumDemo", content: "Configure Next.js and tailwind " },
     3: { id: 3, state: 1, creator: "Toni", assigned: "Mr.Perfect", title: "ScrumDemo", content: "Create sidebar navigation menu" },
     4: { id: 4, state: 1, creator: "Toni", assigned: "Toni", title: "ScrumDemo", content: "Create page footer" },
     5: { id: 5, state: 1, creator: "Hockn", assigned: "Marcel Krei", title: "ScrumDemo", content: "Create page navigation menu" },
