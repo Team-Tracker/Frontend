@@ -1,16 +1,16 @@
 export async function loginUser(username, password) {
-    const response = await fetch(
-      `http://geyser.sytes.net:1234/main/login`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify({ username, password, sessionId })
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Login failed");
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+  const response = await fetch(
+    `${baseUrl}/auth/login?username=${username}&password=${password}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
     }
+  );
 
-    return response;
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+
+  return response;
 }

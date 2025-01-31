@@ -1,10 +1,11 @@
 "use client";
 // /components/Calendar/AppointmentPopup.js
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HStack } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input, Stack } from "@chakra-ui/react";
 import { Button } from "@/components/ui/button";
+import { createListCollection } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
@@ -26,32 +27,59 @@ import {
   SelectValueText,
 } from "@/components/ui/select";
 
-export default function AddAppointmentPopup({ onClose }) {
+export default function AddAppointmentPopup({ onClose, users }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [members, setMembers] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const contentRef = useRef(null);
+  console.log("Users from PopUp: ", users);
+
+  // Map users to a format compatible with Chakra UI Select
+  const usersCollection = createListCollection({
+    items: users.map((user) => ({
+      label: user.username, // The display name for the user
+      value: user.id, // The unique id for the user
+    })),
+  });
+
+  // Handle user selection toggling
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle appointment save logic here
-    onClose(); // Close the popup after saving
+  
+    const requestData = {
+      title,
+      date,
+      time,
+      members: selectedUsers,
+      description,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:1234/calendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to save appointment: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      console.log("Appointment saved successfully:", result);
+  
+      onClose(); // Close the popup after saving
+    } catch (error) {
+      console.error("Error saving appointment:", error);
+      alert("Failed to save the appointment. Please try again.");
+    }
   };
-
-  /**
-   * TODO: A request to get the members
-   *
-   */
-  const names = {
-    items: [
-      { label: "Joe", value: "Joe" },
-      { label: "Bo Dallas", value: "Bo Dallas" },
-      { label: "Testuser2", value: "Testuser2" },
-      { label: "Testdev1", value: "Testdev1" },
-    ],
-  };
-
+  
 
   return (
     <HStack>
@@ -106,35 +134,24 @@ export default function AddAppointmentPopup({ onClose }) {
                 />
               </Field>
 
-              <Field label="Members">
-                <Input
-                  placeholder="Members"
-                  size="md"
-                  type="text"
-                  color="black"
-                  onChange={(e) => setMembers(e.target.value)}
-                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
-                />
-              </Field>
-
-              {/* <SelectRoot
-                key="Members"
-                variant="subtle"
-                multiple="true"
-                items={names}
-              >
-                <SelectLabel>Select Members</SelectLabel>
+              <SelectRoot size="sm" multiple collection={usersCollection}>
+                <SelectLabel> Adding Members </SelectLabel>
                 <SelectTrigger>
                   <SelectValueText placeholder="Select members" />
                 </SelectTrigger>
-                <SelectContent>
-                  {names.items.map((name) => (
-                    <SelectItem item={name} key={name.value}>
-                      {name.label}
+                <SelectContent portalRef={contentRef}>
+                  {/* Pass the ref here */}
+                  {usersCollection.items.map((item) => (
+                    <SelectItem
+                      key={item.value}
+                      item={item}
+                      onSelect={() => handleUserSelect(item.value)} // Correctly handle selection
+                    >
+                      {item.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
-              </SelectRoot> */}
+              </SelectRoot>
 
               <Field label="Description">
                 <Textarea
@@ -150,11 +167,16 @@ export default function AddAppointmentPopup({ onClose }) {
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
-              <Button variant="outline" className="mr-2 bg-gray-900 hover:bg-gray-400">
+              <Button
+                variant="outline"
+                className="mr-2 bg-gray-900 hover:bg-gray-400"
+              >
                 Cancel
               </Button>
             </DialogActionTrigger>
-            <Button className="bg-blue-500 text-white hover:bg-blue-600">Save</Button>
+            <Button className="bg-blue-500 text-white hover:bg-blue-600" onClick={handleSubmit}>
+              Save
+            </Button>
           </DialogFooter>
           <DialogCloseTrigger />
         </DialogContent>

@@ -25,6 +25,8 @@ a {
 
 /* Default body styles */
 body {
+  overflow: hidden;
+  height: 100%;
   background-color: #000e2b; /* Dark blue */
   color: #ffffff; /* White text for contrast */
   font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */

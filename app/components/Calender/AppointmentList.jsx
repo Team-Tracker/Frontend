@@ -1,6 +1,6 @@
 "use client";
 
-import { HStack } from "@chakra-ui/react";
+import { HStack, Spinner, Text } from "@chakra-ui/react";
 import { Button } from "@/components/ui/button";
 import {
   DialogActionTrigger,
@@ -9,35 +9,51 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogRoot,
   DialogTitle,
+  DialogRoot,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
 import "./AppointmentList.css";
 
-const AppointmentList = ({day}) => {
+const AppointmentList = ({ day, appointments }) => {
   return (
     <HStack>
-      <DialogRoot key = {day} size = "lg" placement = "center" motionPreset="slide-in-bottom">
+      <DialogRoot
+        key={day}
+        size="lg"
+        placement="center"
+        motionPreset="slide-in-bottom"
+      >
         <DialogTrigger asChild>
-            <span className="DateNumber">{day}</span>
+          <span className="DateNumber">{day.getDate()}</span>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Dialog for {day}</DialogTitle>
+            <DialogTitle>Appointments for {day.toDateString()}</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            {appointments.length > 0 ? (
+              appointments.map((appointment, index) => (
+                <div
+                  key={index}
+                  className="appointment-item bg-gray-800 text-white p-4 rounded-md shadow-md mb-4 hover:bg-gray-700 transition-all duration-300"
+                >
+                  <h3>{appointment.title}</h3>
+                  <p>Date: {appointment.date}</p>
+                  <p>Time: {appointment.time}</p>
+                  <p>Members: {appointment.members.join(", ") || "None"}</p>
+                  <p>Description: {appointment.description}</p>
+                </div>
+              ))
+            ) : (
+              <p>No appointments for this day.</p>
+            )}
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline">Ok</Button>
             </DialogActionTrigger>
-            <Button>Save</Button>
           </DialogFooter>
           <DialogCloseTrigger />
         </DialogContent>

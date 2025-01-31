@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 import { loginUser } from "../services/loginService";
+import { getUserId } from "../services/userinfo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,11 +16,11 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setErrorMessage(''); // Clear any previous error message
+    setErrorMessage(""); // Clear any previous error message
     setLoading(true); // Show loading state (disable button)
 
     if (!username || !password) {
-      setErrorMessage('Please fill in both fields.');
+      setErrorMessage("Please fill in both fields.");
       setLoading(false); // Stop loading state
       return; // Stop further execution
     }
@@ -39,34 +41,39 @@ export default function LoginPage() {
      * TODO: remove session.js in middleware.js and delete lib/session.js
      */
 
-    //const verifylogin = await loginUser(username, password);
-    setLoading(false)
+    const verifylogin = await loginUser(username, password);
+    console.log("Login data: ", verifylogin);
+    setLoading(false);
 
-    //if (verifylogin.ok) {
-      // const data = await response.json();
-      // const newSessionId = data.sessionId;
+    if (verifylogin.ok) {
+      // const response = await loginResponse.json();
+      // const jwt = response.token;
 
-      // Store sessionId in local storage or cookies
-      // localStorage.setItem('sessionId', newSessionId);
+      //sessionStorage.setItem("jwt", jwt);
 
-      // Set cookie with the username (username in this case)
-      document.cookie = `username=${username}; path=/; max-age=3600;`; // Cookie will last for 1 hour
+      document.cookie = `username=${username}; path=/; max-age=3600;`;
+      console.log("Cookie set...")
+
+      const idresponse = await getUserId(username);
+      console.log("ID Response ", idresponse)
+
+      if (!idresponse.ok) {
+        const errorData = await idresponse.json();
+        setErrorMessage(errorData.message || "Failed to fetch user info.");
+        setLoading(false);
+        return;
+      }
+
+      const userId = await idresponse.json();
+      console.log("UserId: ", userId);
+
+      document.cookie = `userId=${userId}; path=/; max-age=3600;`;
 
       setTimeout(() => {
-        // Navigate to home page
-        console.log("Pushing to '/teams'");
+        // console.log("Pushing to '/teams'");
         router.push("/teams");
-        // Force reload if necessary
-        // console.log("Reloading...");
-        // router.refresh();
-        // console.log("Finished reloading :)")
-        // console.log("Pushing to '/'");
-        // router.push("/");
-        // console.log("Reloading...");
-        // router.reload();
-        // console.log("Finished reloading :)")
       }, 500);
-    //}
+    }
   };
 
   return (
@@ -78,36 +85,34 @@ export default function LoginPage() {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm">
-            <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="text-white relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="username"
-              />
-            </div>
-            <div className="mt-4">
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="text-white relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
+            <label htmlFor="username" className="sr-only">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="text-white relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="username"
+            />
+          </div>
+          <div className="mt-4">
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="text-white relative block w-full px-3 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Password"
+            />
           </div>
           <div>
             <button
@@ -118,7 +123,7 @@ export default function LoginPage() {
               Sign In
             </button>
           </div>
-        </form>j
+        </form>
       </div>
     </div>
   );

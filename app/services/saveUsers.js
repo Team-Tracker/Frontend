@@ -1,6 +1,8 @@
-export default async function fetchUsers() {
+export default async function fetchUsers(user_id) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
   try {
-    const response = await fetch(`http://geyser.sytes.net:1234/user/all`, {
+    const response = await fetch(`${baseUrl}/user/others?id=${user_id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
