@@ -1,7 +1,7 @@
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
-export async function getTeams(){
-    const response = await fetch(`${baseUrl}/team/`, {
+export async function getTeamsOld(){
+    const response = await fetch(`${baseUrl}/team`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     })
@@ -10,6 +10,18 @@ export async function getTeams(){
     } else {
         return teams;
     }
+}
+
+export async function getTeams(userid){
+  const response = await fetch(`${baseUrl}/team/${userid}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+  })
+  if(response.ok){
+      return response;
+  } else {
+      return teams;
+  }
 }
 
 export async function getProject(teamId) {

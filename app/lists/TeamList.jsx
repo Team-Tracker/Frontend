@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 import TeamCard from '../components/Teams/TeamCard';
-import { getTeams } from '../services/teamsManagement';
+import { getTeamsOld } from '../services/teamsManagement';
 
 /**
   This list goes through the data, and creates a TeamCard 
@@ -13,8 +13,9 @@ const TeamList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedTeams = await getTeams();
-      setTeams(fetchedTeams);
+      const fetchedTeams = await getTeamsOld();
+      const fetchedTeamsData = await fetchedTeams.json()
+      setTeams(fetchedTeamsData);
     };
 
     fetchData();
