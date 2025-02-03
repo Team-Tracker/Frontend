@@ -14,12 +14,11 @@ const TeamList = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedTeams = await getTeamsOld();
-      const fetchedTeamsData = await fetchedTeams.json()
+      const fetchedTeamsData = await fetchedTeams.json();
       setTeams(fetchedTeamsData);
     };
 
     fetchData();
-    console.log(teams)
   }, []);
 
   return (
@@ -27,9 +26,9 @@ const TeamList = () => {
       {teams.map((team, index) => (
         <TeamCard
           key={index}
-          teamid = {team.teamid}
-          teamName={team.teamName}
-          leaderName={team.leaderName}
+          teamid = {team.id}
+          teamName={team.name}
+          leaderName={team.createrId}
           description={team.description}
         />
       ))}

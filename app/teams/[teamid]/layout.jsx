@@ -15,13 +15,11 @@ export const metadata = {
 export default function TeamLayout({ children }) {
   return (
     <MenuProvider>
-      <div className="flex h-screen">
         <div className="team-navbar">
           <TeamsMenuBar />
         </div>
         <div></div>
         <div className="team-content">{children}</div>
-      </div>
     </MenuProvider>
   );
 }

@@ -1,9 +1,7 @@
 'use client';
 
 import { useRouter, useParams } from 'next/navigation';
-
-import { Container } from "@chakra-ui/react"
-import { Flex } from "@chakra-ui/react"
+import { Container, Flex, Box, Button, Grid } from "@chakra-ui/react";
 
 import Tasks from '@/app/components/Projects/Tasks';
 import ChatCard from '@/app/components/Chat/ChatCard';
@@ -11,7 +9,6 @@ import MemberList from '@/app/components/Projects/MemberList';
 
 import { getProject } from '@/app/services/teamsManagement';
 import { useState, useEffect } from 'react';
-
 import { useMenu } from './MenuContext';
 
 const ProjectDetailPage = () => {
@@ -37,15 +34,45 @@ const ProjectDetailPage = () => {
   };
 
   return (
-    <Flex>
-          {selectedAction.enableTasks && <Container height="3/8" width="1/3"><Tasks /></Container>}
-          <div className="h-1/8" />
-          {selectedAction.enableChat && <Container width="1/3"><ChatCard /></Container>}
-        {selectedAction.enableMemberList && <Container className="w-1/3 h-3/4"><MemberList /></Container>}
-      
-      <div className="w-full flex justify-center mt-4">
-        <button className="fixed bottom-4 bg-blue-500 text-white px-4 py-2 rounded" onClick={handleShowScrumboard}>Show Scrum</button>
-      </div>
+    <Flex direction="column" height="100vh">
+      <Flex as="nav" bg="gray.800" color="white" p={4} justify="space-between">
+        <Box>Go Back</Box>
+        <Box>View</Box>
+      </Flex>
+
+      {/* Main Content */}
+      <Flex flex="1" p={4}>
+        <Grid templateColumns="2fr 1fr" gap={6} width="85%" mx="auto">
+          {/* Left Column: Tasks & Chat - Takes 2/3 width */}
+          <Flex direction="column" gap={6} flex="2">
+            {selectedAction.enableTasks && (
+              <Container height="40vh" bg="gray.900" p={4} borderRadius="lg" border="2px solid green">
+                <Tasks />
+              </Container>
+            )}
+            {selectedAction.enableChat && (
+              <Container height="40vh" bg="gray.900" p={4} borderRadius="lg" border="2px solid purple">
+                <ChatCard />
+              </Container>
+            )}
+          </Flex>
+
+          {/* Right Column: Member List + Scrum Button - Takes 1/3 width */}
+          <Flex direction="column" flex="1" gap={4}>
+            {selectedAction.enableMemberList && (
+              <Container height="65vh" bg="gray.900" p={4} borderRadius="lg" border="2px solid yellow">
+                <MemberList />
+              </Container>
+            )}
+            {/* Show Scrum Button - Ensuring it is visible */}
+            <Box height="10vh" display="flex" alignItems="center" justifyContent="center">
+              <Button colorScheme="blue" size="lg" onClick={handleShowScrumboard} width="full">
+                Show Scrum
+              </Button>
+            </Box>
+          </Flex>
+        </Grid>
+      </Flex>
     </Flex>
   );
 };

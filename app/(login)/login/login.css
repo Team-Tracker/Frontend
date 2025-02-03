@@ -10,9 +10,8 @@ body {
   font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
 
   /* Flexbox for centering content */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
   min-height: 100vh; /* Ensure body takes full viewport height */
   margin: 0; /* Remove any default body margin */
 }

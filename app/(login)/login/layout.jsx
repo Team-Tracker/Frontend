@@ -2,6 +2,8 @@ import { Rubik } from "next/font/google";
 import "./login.css";
 import localFont from "next/font/local";
 
+import React from "react";
+
 // components
 
 
@@ -14,11 +16,10 @@ export const metadata = {
 
 export default function LoginLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="login-layout">
-        <div>{children}</div>
-      </body>
-    </html>
+        //<div className="login-layout">{React.cloneElement(children, { childFromLogin: true })}</div>
+        <div className="login-layout">
+          {children}
+        </div>
   );
 }
 

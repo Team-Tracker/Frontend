@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { loginUser } from "../services/loginService";
-import { getUserId } from "../services/userinfo";
+import { loginUser } from "../../services/loginService";
+import { getUserId } from "../../services/userinfo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -77,7 +77,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="items-center justify-center">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
         <h2 className="text-3xl font-extrabold text-center text-gray-900">
           Sign in to your account

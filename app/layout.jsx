@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 // components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import BodyWrapper from "./components/BodyWrapper";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
