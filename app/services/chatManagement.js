@@ -6,7 +6,7 @@ export default function initWebSocket(url){
 
 export async function sendMessage(user_id, chat_id, text) {
   try {
-    const response = await fetch(`${baseUrl}/message/send?userId=${user_id}&chatId=${chat_id}&text=${text}`, {
+    const response = await fetch(`${baseUrl}/message/send?userId=${user_id}&chatGroupId=${chat_id}&text=${text}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

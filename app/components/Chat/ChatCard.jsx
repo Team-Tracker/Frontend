@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { sendMessage, registerchat } from "@/app/services/chatManagement";
 import { getUserName } from "@/app/services/userinfo";
 
-const ChatCard = ({ chatGroupId, userId }) => {
+const ChatCard = ({ chatId, userId }) => {
   const wsRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -59,7 +59,7 @@ const ChatCard = ({ chatGroupId, userId }) => {
 
   const send = async () => {
     try {
-      const response = await sendMessage(userId, chatGroupId, newMessage);
+      const response = await sendMessage(userId, chatId, newMessage);
 
       if (!response.ok) {
         console.error("Failed to send message:", response.status);
@@ -76,7 +76,7 @@ const ChatCard = ({ chatGroupId, userId }) => {
 
   return (
     <div className="flex flex-col h-full max-h-[85vh]">
-      <h2 className="text-xl font-semibold mb-4 table-fixed">Chat {chatGroupId}</h2>
+      <h2 className="text-xl font-semibold mb-4 table-fixed">Chat {chatId}</h2>
       <div className="flex-grow overflow-y-auto mb-4">
         <ul className="space-y-2">
           {messages.map((message, index) => {
