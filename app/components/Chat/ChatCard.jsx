@@ -59,7 +59,7 @@ const ChatCard = ({ chatId, userId }) => {
 
   const send = async () => {
     try {
-      const response = await sendMessage(userId, chatId, newMessage);
+      const response = await sendMessage(userId, chatGroupId, newMessage);
 
       if (!response.ok) {
         console.error("Failed to send message:", response.status);
