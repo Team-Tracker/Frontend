@@ -1,5 +1,7 @@
 import { Rubik } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
+import { LayoutProvider, useLayout } from "./contexts/LayoutContext";
+import LayoutWrapper from "./contexts/LayoutWrapper";
 
 import "./globals.css";
 import localFont from "next/font/local";
@@ -7,7 +9,6 @@ import localFont from "next/font/local";
 // components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import BodyWrapper from "./components/BodyWrapper";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -30,14 +31,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="root-layout">
-        <Navbar />
-        <Sidebar />
-        <div className="main-content">
-          <Provider>{children}</Provider>
-        </div>
+      <body>
+      <LayoutProvider>
+          <Provider>
+            <LayoutWrapper>{children}</LayoutWrapper> {/* Now inside the provider */}
+          </Provider>
+        </LayoutProvider>
       </body>
     </html>
   );
 }
-

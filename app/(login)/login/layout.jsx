@@ -17,9 +17,7 @@ export const metadata = {
 export default function LoginLayout({ children }) {
   return (
         //<div className="login-layout">{React.cloneElement(children, { childFromLogin: true })}</div>
-        <div className="login-layout">
-          {children}
-        </div>
+          <>{children}</>
   );
 }
 
