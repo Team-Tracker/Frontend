@@ -121,7 +121,7 @@ const ChatCard = ({ chatId, userId }) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          className="border p-2 rounded flex-grow text-black"
+          className="border p-2 rounded flex-grow text-white"
         />
         <button
           onClick={send}
