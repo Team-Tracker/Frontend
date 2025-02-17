@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { sendMessage, registerchat } from "@/app/services/chatManagement";
+import { sendMessage, registerchat, loadMessages } from "@/app/services/chatManagement";
 import { getUserName } from "@/app/services/userinfo";
 
 const ChatCard = ({ chatId, userId }) => {
@@ -73,6 +73,20 @@ const ChatCard = ({ chatId, userId }) => {
       console.error("Error sending message:", error);
     }
   };
+
+  const loadOldMessages = async () => {
+    try {
+      const response = await loadMessages(chatId);
+      if (!response.ok) {
+        console.error("Failed to get old messages:", response.status);
+        throw new Error("Failed to get old messages");
+      } else {
+        console.log("Messages recieved successfully:", response);
+      }
+    } catch (error) {
+      console.error("Error recieving messages:", error);
+    }
+  }
 
   return (
     <div className="flex flex-col h-full max-h-[85vh]">

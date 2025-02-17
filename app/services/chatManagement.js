@@ -70,3 +70,19 @@ export async function getChats(user_id) {
 
   return response;
 }
+
+
+export async function loadMessages(group_id) {
+  const response = await fetch(
+    `${baseUrl}/messages/messagesChat?chatGroupId=${user_id}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json"}
+    }
+  )
+  if (!response.ok) {
+    throw new Error("Failed to load previous messages");
+  }
+
+  return response;
+}

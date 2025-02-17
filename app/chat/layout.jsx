@@ -17,7 +17,7 @@ export default function ChatLayout({ children }) {
   return (
     <div className="flex h-screen">
       {/* Chat Sidebar */}
-      <div className="chat-sidebar h-full bg-gray-100 fixed top-[64px] left-[256px] w-64 border-r border-gray-300">
+      <div className="chat-sidebar h-full bg-gray-900 fixed top-[64px] left-[256px] w-64 border-r border-gray-900">
         <ChatList users={users} />
       </div>
 
