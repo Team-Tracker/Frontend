@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { createListCollection } from "@chakra-ui/react";
 import {
@@ -37,32 +37,44 @@ export default function AddChatPopUp({ onAddChat, users }) {
     })),
   });
 
+
   // Handle form submission (add new chat)
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (chatName.trim()) {
-      const newChat = {
-        id: Date.now(), // Generate a temporary unique ID
-        name: chatName,
-        members: selectedUsers,
-      };
+    console.log("Submited: ", e.preventDefault)
 
-      onAddChat(newChat); // Notify parent component of the new chat
-      setChatName(""); // Reset input
-      setSelectedUsers([]); // Clear selected users
-    }
+    console.log(selectedUsers);
+
+    console.log("Users collection items: ", usersCollection.items)
+
+    // if (chatName.trim()) {
+    //   const newChat = {
+    //     id: Date.now(), // Generate a temporary unique ID
+    //     name: chatName,
+    //     members: selectedUsers,
+    //   };
+
+    //   onAddChat(newChat); // Notify parent component of the new chat
+    //   setChatName(""); // Reset input
+    //   setSelectedUsers([]); // Clear selected users
+    // }
   };
 
   // Handle user selection toggling
   const handleUserSelect = (userId) => {
-    setSelectedUsers((prevSelected) =>
-      prevSelected.includes(userId)
+    console.log("Test :)");
+    setSelectedUsers((prevSelected) => {
+      const updatedUsers = prevSelected.includes(userId)
         ? prevSelected.filter((id) => id !== userId) // Deselect user
-        : [...prevSelected, userId] // Select user
-    );
-    console.log("Selected users: ", selectedUsers)
+        : [...prevSelected, userId]; // Select user
+
+      console.log("Updated Selected Users: ", updatedUsers);
+      return updatedUsers;
+    });
+    console.log("SelectedUsers: ", selectedUsers)
   };
+
 
   // Get selected user names to display in SelectValueText
   const selectedUserNames = selectedUsers
@@ -70,7 +82,7 @@ export default function AddChatPopUp({ onAddChat, users }) {
       const user = users.find((user) => user.id === userId);
       return user ? user.username : null;
     })
-    .filter(Boolean); // Remove any null values
+    .filter(Boolean);
 
 
   return (
@@ -100,23 +112,34 @@ export default function AddChatPopUp({ onAddChat, users }) {
                 className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-              <SelectRoot multiple collection={usersCollection} size="sm">
-                <SelectLabel>Adding Members</SelectLabel>
-                <SelectTrigger>
-                  <SelectValueText placeholder="Select members" />
-                </SelectTrigger>
-                <SelectContent portalRef={contentRef}> {/* Pass the ref here */}
+            <SelectRoot
+              multiple
+              collection={usersCollection}
+              size="sm"
+              onValueChange={(newValues) => {
+                console.log("New selected values:", newValues); // Debugging log
+                const selected = Array.isArray(newValues.map((newValue) => newValue.value));
+                console.log("Selected Users: ", selected)
+
+                setSelectedUsers(selected)
+                console.log("Selected Users: ", selectedUsers)
+              }}
+            >
+              <SelectLabel>Adding Members</SelectLabel>
+              <SelectTrigger>
+                <SelectValueText placeholder="Select members" />
+              </SelectTrigger>
+              <SelectContent portalRef={contentRef}> {/* Pass the ref here */}
                 {usersCollection.items.map((item) => (
                   <SelectItem
                     key={item.value}
                     item={item}
-                    onSelect={() => handleUserSelect(item.value)} // Correctly handle selection
                   >
                     {item.label}
                   </SelectItem>
                 ))}
               </SelectContent>
-              </SelectRoot>
+            </SelectRoot>
           </div>
         </DialogBody>
 
@@ -129,7 +152,7 @@ export default function AddChatPopUp({ onAddChat, users }) {
           <DialogActionTrigger asChild>
             <Button
               type="submit"
-              onClick={handleSubmit} // Handle submit
+              onClick={handleSubmit}
               className="bg-blue-500 text-white hover:bg-blue-600"
             >
               Save

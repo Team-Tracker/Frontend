@@ -41,9 +41,24 @@ export async function registerchat(user_id, session_id) {
   return response;
 }
 
-export async function createChat(user_id, other_user_id) {
-  const response = await fetch (
-    `${baseUrl}/chat/create?userId=${user_id}&otherUserId=${other_user_id}`,
+export async function createChat(user_id, other_user_ids) {
+  const responseChannel = await fetch (
+    `${baseUrl}/chat/createMono?userId=${user_id}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json"}
+    }
+  )
+  if (!response.ok) {
+    throw new Error("Failed to create Chat");
+  }
+
+  other_user_ids.map((other_user_id, index) => { 
+
+  });
+
+  const responseAddedUser = await fetch (
+    `${baseUrl}/chat/add?userId=${user_id}&otherUserId=${other_user_id}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json"}
@@ -74,7 +89,7 @@ export async function getChats(user_id) {
 
 export async function loadMessages(group_id) {
   const response = await fetch(
-    `${baseUrl}/messages/messagesChat?chatGroupId=${user_id}`,
+    `${baseUrl}/messages/messagesChat?chatGroupId=${group_id}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json"}
@@ -86,3 +101,4 @@ export async function loadMessages(group_id) {
 
   return response;
 }
+

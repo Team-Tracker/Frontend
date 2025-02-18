@@ -43,7 +43,7 @@ const ChatList = () => {
 
           console.log("Users from the service: ", fetchedUsers)
           
-          if(response.ok) {
+          if(Array.isArray(fetchedUsers)) {
             setUsers(fetchedUsers);
             console.log("Users: ", users);
           } else {

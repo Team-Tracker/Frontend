@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect } from 'react';
 
-import TeamCard from '../components/Teams/TeamCard';
-import { getTeamsOld } from '../services/teamsManagement';
+import React, { useState, useEffect } from "react";
+
+import TeamCard from "../components/Teams/TeamCard";
+import { getTeams } from "../services/teamsManagement";
 
 /**
   This list goes through the data, and creates a TeamCard 
@@ -10,10 +11,27 @@ import { getTeamsOld } from '../services/teamsManagement';
 */
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    // Get userId from cookie only on client-side
+    const getCookie = (name) => {
+      if (typeof document === "undefined") return null; // Ensure it's client-side
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + "=")) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return null;
+    };
+
+
     const fetchData = async () => {
-      const fetchedTeams = await getTeamsOld();
+      const cookie = getCookie("userId")
+
+      const fetchedTeams = await getTeams(cookie);
       const fetchedTeamsData = await fetchedTeams.json();
       setTeams(fetchedTeamsData);
     };
@@ -26,7 +44,7 @@ const TeamList = () => {
       {teams.map((team, index) => (
         <TeamCard
           key={index}
-          teamid = {team.id}
+          teamid={team.id}
           teamName={team.name}
           leaderName={team.createrId}
           description={team.description}
@@ -44,10 +62,10 @@ const TeamList = () => {
     the left side
 */
 const listStyle = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'space-around',
-  justifyContent: 'flex-start',
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "space-around",
+  justifyContent: "flex-start",
 };
 
 export default TeamList;
