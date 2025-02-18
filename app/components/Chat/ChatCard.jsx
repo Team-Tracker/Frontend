@@ -11,6 +11,7 @@ const ChatCard = ({ chatId, userId }) => {
   const [newMessage, setNewMessage] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [userNames, setUserNames] = useState({});
+  const [loadingPreviousMessages, setLoadingPreviousMessages] = useState(true);
 
   useEffect(() => {
     // Turn off AddBlocker
@@ -29,6 +30,23 @@ const ChatCard = ({ chatId, userId }) => {
       if (message.sessionId) {
         setSessionId(message.sessionId);
         await registerchat(userId, message.sessionId);
+
+        if(loadingPreviousMessages) {
+          try {
+            const respOldMessages = await loadMessages(chatId);
+            if (!respOldMessages.ok) {
+              console.error("Failed to get old messages:", respOldMessages.status);
+              throw new Error("Failed to get old messages");
+            } else {
+              const respJSONOldMessages = await respOldMessages.json();
+              setMessages(respJSONOldMessages)
+              // console.log("Messages recieved successfully:", respJSONOldMessages);
+              setLoadingPreviousMessages(false);
+            }
+          } catch (err){
+            console.error("Error fetching old messages: ", err);
+          }
+        }
       } else {
         if (!userNames[message.userid]) {
           try {
@@ -74,20 +92,6 @@ const ChatCard = ({ chatId, userId }) => {
       console.error("Error sending message:", error);
     }
   };
-
-  const loadOldMessages = async () => {
-    try {
-      const response = await loadMessages(chatId);
-      if (!response.ok) {
-        console.error("Failed to get old messages:", response.status);
-        throw new Error("Failed to get old messages");
-      } else {
-        console.log("Messages recieved successfully:", response);
-      }
-    } catch (error) {
-      console.error("Error recieving messages:", error);
-    }
-  }
 
   return (
     <div className="flex flex-col flex-grow h-full max-h-[85vh] p-4">

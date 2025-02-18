@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { createListCollection } from "@chakra-ui/react";
 import {
@@ -23,42 +23,32 @@ import {
   SelectValueText,
 } from "@/components/ui/select";
 
-export default function AddChatPopUp({ onAddChat, users }) {
+import { createChat } from "@/app/services/chatManagement";
+
+export default function AddChatPopUp({ onAddChat, users, userId }) {
   const [chatName, setChatName] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const contentRef = useRef(null);
 
-  // Map users to a format compatible with Chakra UI Select
   const usersCollection = createListCollection({
     items: users.map((user) => ({
-      label: user.username, // The display name for the user
-      value: user.id, // The unique id for the user
+      label: user.username, 
+      value: user.id, 
     })),
   });
 
 
   // Handle form submission (add new chat)
-  const handleSubmit = (e) => {
+  const addChat = async (e) => {
     e.preventDefault();
 
-    console.log("Submited: ", e.preventDefault)
+    console.log("Submited selected users: ", selectedUsers)
+    const submitChat = await createChat(userId, selectedUsers)
 
-    console.log(selectedUsers);
-
-    console.log("Users collection items: ", usersCollection.items)
-
-    // if (chatName.trim()) {
-    //   const newChat = {
-    //     id: Date.now(), // Generate a temporary unique ID
-    //     name: chatName,
-    //     members: selectedUsers,
-    //   };
-
-    //   onAddChat(newChat); // Notify parent component of the new chat
-    //   setChatName(""); // Reset input
-    //   setSelectedUsers([]); // Clear selected users
-    // }
+    if(!submitChat.ok) {
+      console.log("Error creating chat...");
+    }
   };
 
   // Handle user selection toggling
@@ -118,11 +108,10 @@ export default function AddChatPopUp({ onAddChat, users }) {
               size="sm"
               onValueChange={(newValues) => {
                 console.log("New selected values:", newValues); // Debugging log
-                const selected = Array.isArray(newValues.map((newValue) => newValue.value));
+                const selected = Array.isArray(newValues) ? newValues.map((newValue) => newValue.value) : [newValues.value];
                 console.log("Selected Users: ", selected)
 
                 setSelectedUsers(selected)
-                console.log("Selected Users: ", selectedUsers)
               }}
             >
               <SelectLabel>Adding Members</SelectLabel>
@@ -152,7 +141,7 @@ export default function AddChatPopUp({ onAddChat, users }) {
           <DialogActionTrigger asChild>
             <Button
               type="submit"
-              onClick={handleSubmit}
+              onClick={addChat}
               className="bg-blue-500 text-white hover:bg-blue-600"
             >
               Save

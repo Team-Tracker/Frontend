@@ -13,9 +13,12 @@ const ChatList = () => {
 
   const [chats, setChats] = useState([]);
   const [users, setUsers] = useState([]);
+  const [user_Id, setUserId] = useState(null);
 
   useEffect(() => {
     const userId = getCookie('userId');
+    setUserId(userId)
+
 
     const fetchChats = async () => {
       try {
@@ -85,7 +88,7 @@ const ChatList = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-white text-2xl font-semibold">Chats</h1>
         <div className='p-2 bg-black-500 text-white text-2xl rounded hover:bg-black-800'>
-          <AddChatPopUp onAddChat={addNewChat} users={users} />
+          <AddChatPopUp onAddChat={addNewChat} users={users} userId={user_Id} />
         </div>
       </div>
       <ul>

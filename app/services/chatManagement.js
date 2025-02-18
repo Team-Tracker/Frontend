@@ -1,29 +1,30 @@
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function initWebSocket(url){
-
-}
+export default function initWebSocket(url) {}
 
 export async function sendMessage(user_id, chat_id, text) {
   try {
-    const response = await fetch(`${baseUrl}/message/send?userId=${user_id}&chatGroupId=${chat_id}&text=${text}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      `${baseUrl}/message/send?userId=${user_id}&chatGroupId=${chat_id}&text=${text}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to send message');
+      throw new Error("Failed to send message");
     }
 
-    // if the response is ok, than it should display the message 
+    // if the response is ok, than it should display the message
     // that is saved in ChatCard
     return response;
   } catch (error) {
-    console.error('Error sending message via HTTP:', error);
+    console.error("Error sending message via HTTP:", error);
   }
-};
+}
 
 export async function registerchat(user_id, session_id) {
   const response = await fetch(
@@ -42,43 +43,46 @@ export async function registerchat(user_id, session_id) {
 }
 
 export async function createChat(user_id, other_user_ids) {
-  const responseChannel = await fetch (
+  const responseChannel = await fetch(
     `${baseUrl}/chat/createMono?userId=${user_id}`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json"}
+      headers: { "Content-Type": "application/json" },
     }
-  )
-  if (!response.ok) {
+  );
+  if (!responseChannel.ok) {
     throw new Error("Failed to create Chat");
   }
 
-  other_user_ids.map((other_user_id, index) => { 
+  const createdChatId = await responseChannel.json();
 
-  });
-
-  const responseAddedUser = await fetch (
-    `${baseUrl}/chat/add?userId=${user_id}&otherUserId=${other_user_id}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json"}
-    }
-  )
-  if (!response.ok) {
-    throw new Error("Failed to create Chat");
+  if (Array.isArray(other_user_ids[0])) {
+    other_user_ids = other_user_ids[0];
   }
 
-  return response;
+  await Promise.all(
+    other_user_ids.map(async (other_user_id, index) => {
+      console.log("Adding user ID: ", other_user_id);
+      const responseAddUserToGroup = await fetch(
+        `${baseUrl}/chat/add?chatGroupId=${createdChatId}&userId=${other_user_id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!responseAddUserToGroup.ok) {
+        throw new Error("Failed to add User to the chat");
+      }
+    })
+  );
+  return responseChannel;
 }
 
 export async function getChats(user_id) {
-  const response = await fetch(
-    `${baseUrl}/chat/chats?userId=${user_id}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json"}
-    }
-  )
+  const response = await fetch(`${baseUrl}/chat/chats?userId=${user_id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
   if (!response.ok) {
     throw new Error("Failed to get chats");
   }
@@ -86,19 +90,17 @@ export async function getChats(user_id) {
   return response;
 }
 
-
 export async function loadMessages(group_id) {
   const response = await fetch(
-    `${baseUrl}/messages/messagesChat?chatGroupId=${group_id}`,
+    `${baseUrl}/message/messagesChat?chatGroupId=${group_id}`,
     {
       method: "GET",
-      headers: { "Content-Type": "application/json"}
+      headers: { "Content-Type": "application/json" },
     }
-  )
+  );
   if (!response.ok) {
     throw new Error("Failed to load previous messages");
   }
 
   return response;
 }
-
