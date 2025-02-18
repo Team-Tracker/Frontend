@@ -12,8 +12,16 @@ export default async function fetchUsers(user_id) {
       throw new Error(`Server responded with status: ${response.status}`);
     }
 
+    console.log("Response users: ", response)
+
     const users = await response.json();
-    return users;
+    console.log("Fetched users: ", users)
+
+    const filteredUsers = users.map(({ id, username }) => ({ id, username }));
+
+    console.log("Filtered users: ", filteredUsers);
+    
+    return filteredUsers;
   } catch (error) {
     console.error("Fetch error:", error.message);
 

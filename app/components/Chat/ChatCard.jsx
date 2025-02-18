@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { sendMessage, registerchat, loadMessages } from "@/app/services/chatManagement";
 import { getUserName } from "@/app/services/userinfo";
 
+
 const ChatCard = ({ chatId, userId }) => {
   const wsRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -89,7 +90,7 @@ const ChatCard = ({ chatId, userId }) => {
   }
 
   return (
-    <div className="flex flex-col h-full max-h-[85vh]">
+    <div className="flex flex-col flex-grow h-full max-h-[85vh] p-4">
       <h2 className="text-xl font-semibold mb-4 table-fixed">Chat {chatId}</h2>
       <div className="flex-grow overflow-y-auto mb-4">
         <ul className="space-y-2">
