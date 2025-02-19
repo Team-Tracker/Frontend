@@ -1,7 +1,7 @@
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
-export async function getTeamsOld(){
-    const response = await fetch(`${baseUrl}/team`, {
+export async function getTeamChat(teamid){
+    const response = await fetch(`${baseUrl}/teamChat/${teamid}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     })
@@ -13,7 +13,7 @@ export async function getTeamsOld(){
 }
 
 export async function getTeams(userid){
-  const response = await fetch(`${baseUrl}/team/${userid}`, {
+  const response = await fetch(`${baseUrl}/team/teams/${userid}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
   })
@@ -25,6 +25,7 @@ export async function getTeams(userid){
 }
 
 export async function getProject(teamId) {
+    console.log("TeamId provided for /team/{teamId}: ", teamId);
     const response = await fetch(`${baseUrl}/team/${teamId}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },

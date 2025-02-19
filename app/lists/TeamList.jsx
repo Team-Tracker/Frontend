@@ -64,8 +64,11 @@ const TeamList = () => {
 const listStyle = {
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "space-around",
   justifyContent: "flex-start",
+  alignItems: "flex-start",
+  // marginLeft: "250px", // Adjust based on your sidebar width
+  padding: "20px",
+  gap: "16px",
 };
 
 export default TeamList;
