@@ -13,6 +13,12 @@ import {
   DialogRoot,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuContextTrigger,
+} from "@/components/ui/menu";
 
 import "./AppointmentList.css";
 
@@ -32,24 +38,33 @@ const AppointmentList = ({ day, appointments }) => {
           <DialogHeader>
             <DialogTitle>Appointments for {day.toDateString()}</DialogTitle>
           </DialogHeader>
-          <DialogBody>
-            {appointments.length > 0 ? (
-              appointments.map((appointment, index) => (
-                <div
-                  key={index}
-                  className="appointment-item bg-gray-800 text-white p-4 rounded-md shadow-md mb-4 hover:bg-gray-700 transition-all duration-300"
-                >
-                  <h3>{appointment.title}</h3>
-                  <p>Date: {appointment.date}</p>
-                  <p>Time: {appointment.time}</p>
-                  <p>Members: {appointment.members.join(", ") || "None"}</p>
-                  <p>Description: {appointment.description}</p>
-                </div>
-              ))
-            ) : (
-              <p>No appointments for this day.</p>
-            )}
-          </DialogBody>
+          {/* <MenuRoot>
+            <MenuContextTrigger w="full"> */}
+              <DialogBody>
+                {appointments.length > 0 ? (
+                  appointments.map((appointment, index) => (
+                    <div
+                      key={index}
+                      className="appointment-item flex bg-gray-800 text-white p-4 rounded-md shadow-md mb-4 hover:bg-gray-700 transition-all duration-300"
+                    >
+                      <h3>Title: {appointment.eventName}</h3>
+                      <p>Date: {appointment.eventDate}</p>
+                      <p>Start time: {appointment.startTime}</p>
+                      <p>End time: {appointment.endTime}</p>
+                      <p>Description: {appointment.eventDescription}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No appointments for this day.</p>
+                )}
+              </DialogBody>
+            {/* </MenuContextTrigger>
+
+            <MenuContent>
+              <MenuItem value="edit">edit</MenuItem>
+              <MenuItem value="delete">Delete</MenuItem>
+            </MenuContent>
+          </MenuRoot> */}
           <DialogFooter>
             <DialogActionTrigger asChild>
               <Button variant="outline">Ok</Button>

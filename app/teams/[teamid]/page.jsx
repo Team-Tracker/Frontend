@@ -44,11 +44,11 @@ const ProjectDetailPage = () => {
         // ! ERROR: if enable -> ChatCard, UI Error:
         // ! Objects are not valid as a react child 
         // ! (found: object with keys {id, name, timestamp}). If you meant to render a collection of children, use an array instead.
-        // const teamChat = await getTeamChat(teamid);
-        // const teamChatData = await teamChat.json();
-        // console.log(teamChat)
+        const teamChat = await getTeamChat(teamid);
+        const teamChatData = await teamChat.json();
+        console.log("TeamChat DAta: ", teamChatData)
         setTeam(teamData);
-        // setTeamChatId(teamChatData);
+        setTeamChatId(teamChatData.id);
       } catch (err) {
         console.error("Error fetching data...")
       }
@@ -78,7 +78,7 @@ const ProjectDetailPage = () => {
           <Flex direction="column" gap={6} flex="2">
             {selectedAction.enableTasks && (
               <Container
-                height="40vh"
+                height="25vh"
                 bg="gray.900"
                 p={4}
                 borderRadius="lg"
@@ -89,7 +89,7 @@ const ProjectDetailPage = () => {
             )}
             {selectedAction.enableChat && (
               <Container
-                height="40vh"
+                height="50vh"
                 bg="gray.900"
                 p={4}
                 borderRadius="lg"

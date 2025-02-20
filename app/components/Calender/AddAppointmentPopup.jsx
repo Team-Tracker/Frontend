@@ -1,12 +1,14 @@
 "use client";
 // /components/Calendar/AppointmentPopup.js
 import { useState, useRef, useEffect } from "react";
+
 import { HStack } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input, Stack } from "@chakra-ui/react";
 import { Button } from "@/components/ui/button";
 import { createListCollection } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/react";
+
 import {
   DialogActionTrigger,
   DialogBody,
@@ -27,10 +29,13 @@ import {
   SelectValueText,
 } from "@/components/ui/select";
 
-export default function AddAppointmentPopup({ onClose, users }) {
+import { createAssignment } from "@/app/services/calenderService";
+
+export default function AddAppointmentPopup({ onClose, users, usersId }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [members, setMembers] = useState("");
   const [description, setDescription] = useState("");
 
@@ -51,20 +56,9 @@ export default function AddAppointmentPopup({ onClose, users }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const requestData = {
-      title,
-      date,
-      time,
-      members: selectedUsers,
-      description,
-    };
-  
     try {
-      const response = await fetch("http://localhost:1234/calendar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestData),
-      });
+      console.log("Data: ", usersId," " ,title, " ", description, " ", date, " ", startTime, " ", endTime)
+      const response = await createAssignment(usersId, title, description, date, startTime, endTime);
   
       if (!response.ok) {
         throw new Error(`Failed to save appointment: ${response.statusText}`);
@@ -123,35 +117,55 @@ export default function AddAppointmentPopup({ onClose, users }) {
                 />
               </Field>
 
-              <Field label="Time" errorText="This is not a valid time">
+              <Field label="StartTime" errorText="This is not a valid time">
                 <Input
-                  placeholder="Time"
+                  placeholder="StartTime"
                   size="md"
                   type="time"
                   color="black"
-                  onChange={(e) => setTime(e.target.value)}
+                  onChange={(e) => setStartTime(e.target.value)}
                   className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
                 />
               </Field>
 
-              <SelectRoot size="sm" multiple collection={usersCollection}>
-                <SelectLabel> Adding Members </SelectLabel>
-                <SelectTrigger>
-                  <SelectValueText placeholder="Select members" />
-                </SelectTrigger>
-                <SelectContent portalRef={contentRef}>
-                  {/* Pass the ref here */}
-                  {usersCollection.items.map((item) => (
-                    <SelectItem
-                      key={item.value}
-                      item={item}
-                      onSelect={() => handleUserSelect(item.value)} // Correctly handle selection
-                    >
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
+              <Field label="EndTime" errorText="This is not a valid time">
+                <Input
+                  placeholder="EndTime"
+                  size="md"
+                  type="time"
+                  color="black"
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="mb-4 p-2 border border-black rounded-md text-sm transition-colors duration-300 focus:border-blue-500 focus:outline-none"
+                />
+              </Field>
+
+              <SelectRoot
+              multiple
+              collection={usersCollection}
+              size="sm"
+              onValueChange={(newValues) => {
+                console.log("New selected values:", newValues); // Debugging log
+                const selected = Array.isArray(newValues) ? newValues.map((newValue) => newValue.value) : [newValues.value];
+                console.log("Selected Users: ", selected)
+
+                setSelectedUsers(selected)
+              }}
+            >
+              <SelectLabel>Adding Members</SelectLabel>
+              <SelectTrigger>
+                <SelectValueText placeholder="Select members" />
+              </SelectTrigger>
+              <SelectContent portalRef={contentRef}> {/* Pass the ref here */}
+                {usersCollection.items.map((item) => (
+                  <SelectItem
+                    key={item.value}
+                    item={item}
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
 
               <Field label="Description">
                 <Textarea

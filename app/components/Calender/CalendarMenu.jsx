@@ -7,6 +7,7 @@ import AddAppointmentPopup from "./AddAppointmentPopup";
 export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDate, setSelectedDate, users }) {
   const handleNextMonth = () => setSelectedDate(addMonths(selectedDate, 1));
   const handlePrevMonth = () => setSelectedDate(subMonths(selectedDate, 1));
+  const [userId, setUserId] = useState(null);
 
   return (
     <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300 text-black">

@@ -11,6 +11,7 @@ import {
   isToday,
 } from "date-fns";
 import AppointmentList from "./AppointmentList";
+import { getAssignments } from "@/app/services/calenderService";
 
 export default function CalendarTable({ viewMode, onDateClick, selectedDate }) {
   const daysOfWeek = [
@@ -28,15 +29,29 @@ export default function CalendarTable({ viewMode, onDateClick, selectedDate }) {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`http://localhost:1234/calendar/`);
+        const cookie = getCookie("userId");
+        const response = await getAssignments(cookie);
         if (!response.ok) throw new Error("Failed to fetch appointments");
 
         const data = await response.json();
+        console.log("JSON Response: ", data);
         setAppointments(data);
       } catch (error) {
         console.error("Failed to fetch appointments:", error);
         setAppointments(getStaticAppointments());
       }
+    };
+
+    const getCookie = (name) => {
+      if (typeof document === "undefined") return null;
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + "=")) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return null;
     };
 
     fetchAppointments();
@@ -93,7 +108,7 @@ export default function CalendarTable({ viewMode, onDateClick, selectedDate }) {
   const getAppointmentsForDay = (date) => {
     return appointments.filter(
       (appointment) =>
-        new Date(appointment.date).toDateString() === date.toDateString()
+        new Date(appointment.eventDate).toDateString() === date.toDateString()
     );
   };
 

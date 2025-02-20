@@ -1,8 +1,8 @@
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
-export async function createAssignment(user_id, title, desc, date, time, duration) {
+export async function createAssignment(user_id, title, desc, date, startTime, endTime) {
     try {
-        const response = await fetch(`${baseUrl}/calender/create?userId=${user_id}&title=${title}&description=${desc}&date=${date}&time=${time}&duration=${duration}`, {
+        const response = await fetch(`${baseUrl}/calender/create?userId=${user_id}&title=${title}&description=${desc}&date=${date}&startTime=${startTime}&endTime=${endTime}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

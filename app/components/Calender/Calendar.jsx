@@ -13,8 +13,31 @@ export default function Calendar() {
   const [showaddPopup, setShowAddPopup] = useState(false);
   const [showdetailPopup, setShowDetailPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState(startOfMonth(new Date()));
+  const [userId, setUserId] = useState(null);
+
 
   const users = useUsers(); // Consume users from context
+
+  useEffect(() => {
+      const getCookie = (name) => {
+        if (typeof document === "undefined") return null;
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + "=")) {
+            return cookie.substring(name.length + 1);
+          }
+        }
+        return null;
+      };
+  
+      const fetchData = async () => {
+        const cookie = getCookie("userId");
+        setUserId(cookie);
+      }
+  
+      fetchData();
+    }, []);
 
   return (
       <div className="flex flex-col">
@@ -33,6 +56,7 @@ export default function Calendar() {
             viewMode={viewMode}
             onDateClick={() => setShowDetailPopup(true)}
             selectedDate={selectedDate}
+            userId={userId}
           />
         </div>
         {/* {showaddPopup && (
