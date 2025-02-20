@@ -15,6 +15,7 @@ const ProjectDetailPage = () => {
   const router = useRouter();
 
   const {teamid}  = useParams();
+
   const [team, setTeam] = useState(null);
   const [teamChatId, setTeamChatId] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -61,7 +62,7 @@ const ProjectDetailPage = () => {
   }
 
   const handleShowScrumboard = () => {
-    router.push(`/teams/${id}/scrumboard`);
+    router.push(`/teams/${teamid}/scrumboard`);
   };
 
   return (
