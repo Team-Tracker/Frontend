@@ -45,7 +45,7 @@ const AppointmentList = ({ day, appointments }) => {
                   appointments.map((appointment, index) => (
                     <div
                       key={index}
-                      className="appointment-item flex bg-gray-800 text-white p-4 rounded-md shadow-md mb-4 hover:bg-gray-700 transition-all duration-300"
+                      className="appointment-item bg-gray-800 text-white p-4 rounded-md shadow-md mb-4 hover:bg-gray-700 transition-all duration-300"
                     >
                       <h3>Title: {appointment.eventName}</h3>
                       <p>Date: {appointment.eventDate}</p>
