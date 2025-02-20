@@ -57,8 +57,9 @@ export default function AddAppointmentPopup({ onClose, users, usersId }) {
     e.preventDefault();
   
     try {
-      console.log("Data: ", usersId," " ,title, " ", description, " ", date, " ", startTime, " ", endTime)
-      const response = await createAssignment(usersId, title, description, date, startTime, endTime);
+      const cookie = getCookie("userId");
+      console.log("Data: ", cookie," " ,title, " ", description, " ", date, " ", startTime, " ", endTime)
+      const response = await createAssignment(cookie, title, description, date, startTime, endTime);
   
       if (!response.ok) {
         throw new Error(`Failed to save appointment: ${response.statusText}`);
@@ -73,7 +74,17 @@ export default function AddAppointmentPopup({ onClose, users, usersId }) {
       alert("Failed to save the appointment. Please try again.");
     }
   };
-  
+
+  const getCookie = (name) => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
+  };
 
   return (
     <HStack>
