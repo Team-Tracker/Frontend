@@ -14,6 +14,8 @@ export default function Calendar() {
   const [showdetailPopup, setShowDetailPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState(startOfMonth(new Date()));
   const [userId, setUserId] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+
 
 
   const users = useUsers(); // Consume users from context
@@ -38,6 +40,10 @@ export default function Calendar() {
   
       fetchData();
     }, []);
+
+    const addAppointment = (newAppointment) => {
+      setAppointments((prev) => [...prev, newAppointment]);
+    };
 
   return (
       <div className="flex flex-col">

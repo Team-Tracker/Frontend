@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,11 +46,19 @@ export default function LoginPage() {
     console.log("Login data: ", verifylogin);
     setLoading(false);
 
+
+    if (!verifylogin.ok) {
+      setError(true);
+      return;
+    }
+
     if (verifylogin.ok) {
       // const response = await loginResponse.json();
       // const jwt = response.token;
 
       //sessionStorage.setItem("jwt", jwt);
+      setError(false);
+
 
       document.cookie = `username=${username}; path=/; max-age=3600;`;
       console.log("Cookie set...")
@@ -68,11 +77,7 @@ export default function LoginPage() {
       console.log("UserId: ", userId);
 
       document.cookie = `userId=${userId}; path=/; max-age=3600;`;
-
-      setTimeout(() => {
-        // console.log("Pushing to '/teams'");
-        router.push("/teams");
-      }, 500);
+      router.push("/teams");
     }
   };
 
@@ -114,6 +119,9 @@ export default function LoginPage() {
               placeholder="Password"
             />
           </div>
+          {error && (
+            <p className="text-red-500 text-center">Failed to login! Try again</p>
+          )}
           <div>
             <button
               type="submit"

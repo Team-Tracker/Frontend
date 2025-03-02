@@ -48,7 +48,6 @@ const ChatList = () => {
           
           if(Array.isArray(fetchedUsers)) {
             setUsers(fetchedUsers);
-            console.log("Users: ", users);
           } else {
             console.error('Error fetching other users:', fetchedUsers.statusText);
           }
