@@ -30,7 +30,8 @@ export default function CalendarMenu({ viewMode, setViewMode, onAdd, selectedDat
       
       <button
         onClick={() => setViewMode(viewMode === 'month' ? 'week' : 'month')}
-        className="px-4 py-2 text-base bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+        className="px-4 py-2 text-base bg-blue-400 text-white rounded-md hover:bg-blue-400 transition"
+        disabled="true"
       >
         {viewMode === 'month' ? 'Month View' : 'Week View'}
       </button>

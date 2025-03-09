@@ -1,15 +1,29 @@
 "use client";
 
 // import { tasks } from "@/Data/data";
-import { Flex, Heading, Text, Button } from "@chakra-ui/react";
+import React, { useState, useMemo, useEffect } from "react";
+
 import dynamic from "next/dynamic";
 import { useParams, useRouter } from "next/navigation.js";
-import React, { useState } from "react";
+
+import { Flex, Heading, Text, Button } from "@chakra-ui/react";
 import { DragDropContext } from "react-beautiful-dnd";
+import { createListCollection } from "@chakra-ui/react";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select";
+import { fetchSprintList } from "@/app/services/scrumService";
 
-//TODO: 
+//TODO:
 
-const Column = dynamic(() => import("../../../components/Projects/Column"), { ssr: false });
+const Column = dynamic(() => import("../../../components/Projects/Column"), {
+  ssr: false,
+});
 
 const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   const newTaskIds = Array.from(sourceCol.taskIds);
@@ -29,8 +43,22 @@ export default function Home({ params }) {
   const teamid = params.teamid;
   const [state, setState] = useState(initialData);
   const [oldState, setOldState] = useState([]);
-  const [droppedState, setDroppedState] = useState([])
-  // const []
+  const [droppedState, setDroppedState] = useState([]);
+  const [sprintsList, setSprints] = useState([]);
+
+  useEffect(async () => {
+    const fetchSprints = await fetchSprintList(teamid);
+
+    print("Fetched sprints: ", fetchSprints);
+  }, []);
+
+  const sprints = useMemo(() => {
+    return createListCollection({
+      items: state.value || [],
+      itemToString: (item) => item.name,
+      itemToValue: (item) => item.name,
+    });
+  }, [state.value]);
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
@@ -92,8 +120,8 @@ export default function Home({ params }) {
       },
     };
     setState(newState);
-    console.log(state)
-    console.log(state.columns)
+    console.log(state);
+    console.log(state.columns);
   };
 
   return (
@@ -107,7 +135,13 @@ export default function Home({ params }) {
         color="white-text"
         pb="2rem"
       >
-        <Flex py="4rem" flexDir="column" align="center" position="relative" w="full">
+        <Flex
+          py="4rem"
+          flexDir="column"
+          align="center"
+          position="relative"
+          w="full"
+        >
           <Button
             position="absolute"
             top="1rem"
@@ -119,6 +153,27 @@ export default function Home({ params }) {
           >
             Back to Project Details
           </Button>
+
+          <SelectRoot
+            collection={sprints}
+            position="absolute"
+            top="1rem"
+            left="15rem"
+            size="sm"
+            variant="outline"
+            width="120px"
+          >
+            <SelectTrigger>
+              <SelectValueText placeholder="Select Sprint" />
+            </SelectTrigger>
+            <SelectContent>
+              {sprints.items.map((sprint) => (
+                <SelectItem item={sprint.id} key={sprint.sprintNumber}>
+                  {sprint.sprintNumber}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
 
           <Heading fontSize="3xl" fontWeight={600}>
             React Beautiful Drag and Drop
@@ -133,7 +188,14 @@ export default function Home({ params }) {
             const column = state.columns[columnId];
             const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
 
-            return <Column key={column.id} value={column.state} column={column} tasks={tasks} />;
+            return (
+              <Column
+                key={column.id}
+                value={column.state}
+                column={column}
+                tasks={tasks}
+              />
+            );
           })}
         </Flex>
       </Flex>
@@ -149,18 +211,60 @@ export default function Home({ params }) {
 //   tasksArray.forEach(task => {
 //     transformedtasks[task.id] = {...task};
 //   });
-// } 
+// }
 
 // transformTasksData(tasks);
 
 const initialData = {
   tasks: {
-    1: { id: 1, state: 1, creator: "Hockn", assigned: "McMahon", title: "ScrumDemo", content: "Configure Next.js application" },
-    2: { id: 2, state: 2, creator: "Hockn", assigned: "Kurt", title: "ScrumDemo", content: "Configure Next.js and tailwind " },
-    3: { id: 3, state: 1, creator: "Toni", assigned: "Mr.Perfect", title: "ScrumDemo", content: "Create sidebar navigation menu" },
-    4: { id: 4, state: 1, creator: "Toni", assigned: "Toni", title: "ScrumDemo", content: "Create page footer" },
-    5: { id: 5, state: 1, creator: "Hockn", assigned: "Marcel Krei", title: "ScrumDemo", content: "Create page navigation menu" },
-    6: { id: 6, state: 1, creator: "Hockn", assigned: "Alex", title: "ScrumDemo", content: "Create page layout" },
+    1: {
+      id: 1,
+      state: 1,
+      creator: "Hockn",
+      assigned: "McMahon",
+      title: "ScrumDemo",
+      content: "Configure Next.js application",
+    },
+    2: {
+      id: 2,
+      state: 2,
+      creator: "Hockn",
+      assigned: "Kurt",
+      title: "ScrumDemo",
+      content: "Configure Next.js and tailwind ",
+    },
+    3: {
+      id: 3,
+      state: 1,
+      creator: "Toni",
+      assigned: "Mr.Perfect",
+      title: "ScrumDemo",
+      content: "Create sidebar navigation menu",
+    },
+    4: {
+      id: 4,
+      state: 1,
+      creator: "Toni",
+      assigned: "Toni",
+      title: "ScrumDemo",
+      content: "Create page footer",
+    },
+    5: {
+      id: 5,
+      state: 1,
+      creator: "Hockn",
+      assigned: "Marcel Krei",
+      title: "ScrumDemo",
+      content: "Create page navigation menu",
+    },
+    6: {
+      id: 6,
+      state: 1,
+      creator: "Hockn",
+      assigned: "Alex",
+      title: "ScrumDemo",
+      content: "Create page layout",
+    },
   },
   columns: {
     "column-1": {

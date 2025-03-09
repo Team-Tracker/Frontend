@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
 
 import { loginUser } from "../../services/loginService";
@@ -131,6 +132,11 @@ export default function LoginPage() {
               Sign In
             </button>
           </div>
+          <div className="text-center mt-4">
+          <Link href="/register" className="text-indigo-600 hover:underline">
+            Dont have an account yet? Create one
+          </Link>
+        </div>
         </form>
       </div>
     </div>

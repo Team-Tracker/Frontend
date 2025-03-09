@@ -10,7 +10,7 @@ export function LayoutProvider({ children }) {
   const [layout, setLayout] = useState("root");
 
   useEffect(() => {
-    if (pathname.startsWith("/login")) {
+    if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
       setLayout("login");
     } else {
       setLayout("root");
