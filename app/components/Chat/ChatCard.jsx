@@ -40,7 +40,6 @@ const ChatCard = ({ chatId, userId }) => {
             } else {
               const respJSONOldMessages = await respOldMessages.json();
               setMessages(respJSONOldMessages)
-              // console.log("Messages recieved successfully:", respJSONOldMessages);
               setLoadingPreviousMessages(false);
             }
           } catch (err){

@@ -31,3 +31,37 @@ export async function getUserName(user_id) {
 
   return response;
 }
+
+export async function updateUserData(user_id, firstname, lastname, email, phone) {
+  const response = await fetch(
+    `${baseUrl}/user/update?id=${user_id}&firstname=${firstname}&lastname=${lastname}&email=${email}&phone=${phone}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+
+  return response;
+}
+
+export async function getUserData(user_id) {
+  const response = await fetch(
+    `${baseUrl}/user/one?id=${user_id}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+
+  return response;
+}
+
+
