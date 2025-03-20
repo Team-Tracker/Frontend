@@ -1,20 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const AddTeam = () => {
     const [teamName, setTeamName] = useState("");
+    const [description, setDescription] = useState("");
     const [error, setError] = useState("");
+    const [userId, setUserId] = useState("");
     const router = useRouter();
+
+    useEffect(() => {
+        const getCookie = (name) => {
+            if (typeof document === "undefined") return null;
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.startsWith(name + "=")) {
+                return cookie.substring(name.length + 1);
+              }
+            }
+            return null;
+          };
+
+        setUserId(getCookie("userId"));
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!teamName.trim()) {
-            setError("Dieses Feld ist erforderlich");
+            setError("Please fill out the name");
             return;
         }
         console.log("Team erstellt:", teamName);
+
         router.push("/teams");
     };
 
@@ -29,6 +48,19 @@ const AddTeam = () => {
                         value={teamName} 
                         onChange={(e) => {
                             setTeamName(e.target.value);
+                            setError("");
+                        }}
+                        className="w-full p-2 border rounded" 
+                    />
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                </div>
+                <div className="mb-4">
+                    <label className="block mb-1 font-semibold">Description</label>
+                    <input 
+                        type="text" 
+                        value={description} 
+                        onChange={(e) => {
+                            setDescription(e.target.value);
                             setError("");
                         }}
                         className="w-full p-2 border rounded" 
