@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createTeam } from "@/app/services/teamsManagement";
 
 const AddTeam = () => {
     const [teamName, setTeamName] = useState("");
@@ -23,17 +24,18 @@ const AddTeam = () => {
             return null;
           };
 
-        setUserId(getCookie("userId"));
-    });
+        const cookie = getCookie("userId");
+        setUserId(cookie);
+    }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!teamName.trim()) {
             setError("Please fill out the name");
             return;
         }
         console.log("Team erstellt:", teamName);
-
+        await createTeam(userId, teamName, description)
         router.push("/teams");
     };
 

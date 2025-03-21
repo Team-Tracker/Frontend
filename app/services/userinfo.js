@@ -52,7 +52,7 @@ export async function getUserData(user_id) {
   const response = await fetch(
     `${baseUrl}/user/one?id=${user_id}`,
     {
-      method: "PUT",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
     }
   );

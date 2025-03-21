@@ -22,7 +22,7 @@ export async function createAssignment(user_id, title, desc, date, startTime, en
 export async function deleteAssignment(assignment_id) {
     try {
         const response = await fetch(`${baseUrl}/calender/delete?eventId=${assignment_id}`, {
-          method: 'POST',
+          method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },

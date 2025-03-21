@@ -1,5 +1,22 @@
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
+export async function createTeam(creatorid, teamName, description) {
+  const response = await fetch(`${baseUrl}/team`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "creatorId": creatorid,
+        "name": teamName,
+        "description": description
+      })
+  })
+  if(response.ok){
+     return response;
+  } else {
+      return teams;
+  }
+}
+
 export async function getTeamChat(teamid){
     const response = await fetch(`${baseUrl}/teamChat/${teamid}`, {
         method: "GET",
@@ -23,6 +40,18 @@ export async function getTeams(userid){
       return teams;
   }
 }
+
+export async function getMembers(teamId){
+  const response = await fetch(`${baseUrl}/members/${teamId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+  })
+  
+  if(response.ok){
+      return response;
+  }
+}
+
 
 export async function getProject(teamId) {
     console.log("TeamId provided for /team/{teamId}: ", teamId);

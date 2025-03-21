@@ -4,56 +4,71 @@ import { useEffect, useState } from "react";
 import { getUserData, updateUserData } from "../services/userinfo";
 
 const Profile = () => {
-    const [firstname, setFirstname] = useState([]);
-    const [lastName, setLastName] = useState([]);
-    const [email, setEmail] = useState([]);
-    const [phone, setPhone] = useState([]);
-    const [userid, setUserId] = useState([])
+    const [firstname, setFirstname] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [userId, setUserId] = useState("");
 
-    useEffect(async () => {
+    useEffect(() => {
         const getCookie = (name) => {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.startsWith(name + '=')) {
+            if (typeof document === "undefined") return null;
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(`${name}=`)) {
                     return cookie.substring(name.length + 1);
                 }
             }
             return null;
         };
 
+        const cookie = getCookie("userId");
+        if (!cookie) return;
+
+        setUserId(cookie);
+
         const fetchUserData = async () => {
+            try {
+                const response = await getUserData(cookie);
+                if (!response.ok) {
+                    console.error("Error fetching user data");
+                    return;
+                }
 
-            const response = await getUserData(cookie);
-            if (!response.ok) {
-                console.log("Error fetching User Data");
-                return;
+                const userData = await response.json();
+                console.log("Data: ", userData)
+                setFirstname(userData.firstname || "");
+                setLastName(userData.lastName || "");
+                setEmail(userData.email || "");
+                setPhone(userData.phone || "");
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
             }
-
-            const userData = await response.json();
-            setFirstname(userData.firstname || "");
-            setLastName(userData.lastName || "");
-            setEmail(userData.email || "");
-            setPhone(userData.phone || "");
         };
 
-        const cookie = getCookie('userId');
-        if (!cookie) return;
-        setUserId(cookie);
-        
         fetchUserData();
-    }, [])
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const userUpdate = await updateUserData(userid, firstname, lastName, email, phone)
-
-        if(!userUpdate.ok){
-            console.log("Error updating User data");
-            return
+        if (!userId) {
+            console.error("User ID is missing. Please log in again.");
+            return;
         }
-    }
+
+        try {
+            const userUpdate = await updateUserData(userId, firstname, lastName, email, phone);
+            if (!userUpdate.ok) {
+                console.error("Error updating user data");
+                return;
+            }
+            console.log("User data updated successfully");
+        } catch (error) {
+            console.error("Failed to update user data:", error);
+        }
+    };
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-900">
@@ -98,6 +113,6 @@ const Profile = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Profile;

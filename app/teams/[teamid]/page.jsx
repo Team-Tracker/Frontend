@@ -111,7 +111,7 @@ const ProjectDetailPage = () => {
                 borderRadius="lg"
                 border="2px solid yellow"
               >
-                <MemberList />
+                <MemberList teamId={teamid}/>
               </Container>
             )}
             {/* Show Scrum Button - Ensuring it is visible */}
