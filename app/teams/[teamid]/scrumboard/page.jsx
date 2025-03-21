@@ -46,19 +46,28 @@ export default function Home({ params }) {
   const [droppedState, setDroppedState] = useState([]);
   const [sprintsList, setSprints] = useState([]);
 
-  useEffect(async () => {
-    const fetchSprints = await fetchSprintList(teamid);
+  useEffect(() => {
+    const fetchSprints = async () => {
+      try {
+        const fetchSprints = await fetchSprintList(teamid);
+        print("Fetched sprints: ", fetchSprints);
 
-    print("Fetched sprints: ", fetchSprints);
+        setSprints(fetchSprints);
+      } catch (error) {
+        console.error("Error fetching sprints: ", error);
+      }
+    };
+
+    fetchSprints();
   }, []);
 
   const sprints = useMemo(() => {
-    return createListCollection({
-      items: state.value || [],
-      itemToString: (item) => item.name,
-      itemToValue: (item) => item.name,
-    });
-  }, [state.value]);
+    return sprintsList.map((sprint) => ({
+      items: sprintsList || [],
+      itemToString: (item) => item.sprintNumber,
+      itemToValue: (item) => item.id,
+    }));
+  }, [sprintsList]);
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
@@ -133,7 +142,7 @@ export default function Home({ params }) {
         minH="100vh"
         w="full"
         color="white-text"
-        pb="2rem"
+        pb="1rem"
       >
         <Flex
           py="4rem"
@@ -167,15 +176,19 @@ export default function Home({ params }) {
               <SelectValueText placeholder="Select Sprint" />
             </SelectTrigger>
             <SelectContent>
-              {sprints.items.map((sprint) => (
-                <SelectItem item={sprint.id} key={sprint.sprintNumber}>
-                  {sprint.sprintNumber}
-                </SelectItem>
-              ))}
+              {sprints.length > 0 ? (
+                sprints.map((sprint) => (
+                  <SelectItem key={sprint.id} value={sprint.id}>
+                    {sprint.name}
+                  </SelectItem>
+                ))
+              ) : (
+                <Text>No Sprints Available</Text>
+              )}
             </SelectContent>
           </SelectRoot>
 
-          <Heading fontSize="3xl" fontWeight={600}>
+          <Heading padding="4px" fontSize="3xl" fontWeight={600}>
             React Beautiful Drag and Drop
           </Heading>
           <Text fontSize="20px" fontWeight={600} color="subtle-text">
@@ -183,7 +196,7 @@ export default function Home({ params }) {
           </Text>
         </Flex>
 
-        <Flex justify="space-between" px="4rem">
+        <Flex justify="space-between" px="4rem" top="4px">
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);

@@ -33,7 +33,7 @@ const MemberList = (teamId) => {
     }, []);
 
     return (
-        <div className="w-80 h-full bg-gray-900 rounded-lg p-4 shadow-lg">
+        <div className="w-80 w-full h-full bg-gray-900 rounded-lg p-4 shadow-lg">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-white">Members</h2>
             <button
