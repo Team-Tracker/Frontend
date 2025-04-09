@@ -85,7 +85,7 @@ const ProjectDetailPage = () => {
                 borderRadius="lg"
                 border="2px solid green"
               >
-                <Tasks />
+                <Tasks teamid={teamid} userid={userId}/>
               </Container>
             )}
             {selectedAction.enableChat && (

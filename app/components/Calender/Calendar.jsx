@@ -37,7 +37,6 @@ export default function Calendar() {
       setUserId(cookie);
       const response = await getAssignments(cookie);
       const appointmentResponse = await response.json();
-      console.log(appointmentResponse)
       setAppointments(appointmentResponse)
     };
 
@@ -58,7 +57,7 @@ export default function Calendar() {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           users={users}
-          addAppointment={addAppointment} // Pass function to CalendarMenu
+          addAppointment={addAppointment}
           onClose={() => setShowAddPopup(false)}
         />
       </div>

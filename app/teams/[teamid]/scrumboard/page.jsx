@@ -50,8 +50,7 @@ export default function Home({ params }) {
     const fetchSprints = async () => {
       try {
         const fetchSprints = await fetchSprintList(teamid);
-        print("Fetched sprints: ", fetchSprints);
-
+        console.log("Fetched sprints: ", fetchSprints);
         setSprints(fetchSprints);
       } catch (error) {
         console.error("Error fetching sprints: ", error);
@@ -59,15 +58,16 @@ export default function Home({ params }) {
     };
 
     fetchSprints();
-  }, []);
+  }, [teamid]);
 
   const sprints = useMemo(() => {
     return sprintsList.map((sprint) => ({
-      items: sprintsList || [],
-      itemToString: (item) => item.sprintNumber,
-      itemToValue: (item) => item.id,
+      id: sprint.id,
+      sprintNumber: sprint.sprintNumber,
+      name: `Sprint ${sprint.sprintNumber}`,
     }));
   }, [sprintsList]);
+
 
   const onDragEnd = (result) => {
     const { destination, source } = result;

@@ -54,7 +54,6 @@ export async function getMembers(teamId){
 
 
 export async function getProject(teamId) {
-    console.log("TeamId provided for /team/{teamId}: ", teamId);
     const response = await fetch(`${baseUrl}/team/${teamId}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },

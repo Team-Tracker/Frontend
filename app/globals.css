@@ -32,12 +32,6 @@ body {
   font-family: 'Inter', sans-serif; /* Assuming you use a font like Inter */
 }
 
-/* Styles for main layout (root) */
-body.root-layout .main-content {
-  margin-top: 64px; /* Navbar height */
-  margin-left: 256px; /* Sidebar width */
-  padding: 20px;
-}
 
 /* Styles for chat layout */
 body.root-layout .chat-sidebar {

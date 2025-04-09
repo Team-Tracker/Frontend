@@ -39,7 +39,24 @@ const ChatCard = ({ chatId, userId }) => {
               throw new Error("Failed to get old messages");
             } else {
               const respJSONOldMessages = await respOldMessages.json();
-              setMessages(respJSONOldMessages)
+              setMessages(respJSONOldMessages);
+
+              const uniqueUserIds = [
+                ...new Set(respJSONOldMessages.map((msg) => msg.userid)),
+              ];
+              
+              uniqueUserIds.forEach(async (id) => {
+                if (!userNames[id]) {
+                  try {
+                    const response = await getUserName(id);
+                    const username = await response.text();
+                    setUserNames((prev) => ({ ...prev, [id]: username }));
+                  } catch (err) {
+                    console.error("Error fetching username:", err);
+                  }
+                }
+              });
+
               setLoadingPreviousMessages(false);
             }
           } catch (err){
@@ -98,16 +115,7 @@ const ChatCard = ({ chatId, userId }) => {
       <div className="flex-grow overflow-y-auto mb-4">
         <ul className="space-y-2">
           {messages.map((message, index) => {
-            console.log("Type of userId:", typeof userId, "Value:", userId);
-            console.log(
-              "Type of message.userid:",
-              typeof message.userid,
-              "Value:",
-              message.userid
-            );
-
             const isOwnMessage = Number(message.userid) === Number(userId);
-            console.log("Compare: ", isOwnMessage);
             const username = userNames[message.userid] || "Loading...";
 
             return (
