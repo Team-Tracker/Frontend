@@ -3,13 +3,13 @@ import { Rubik } from "next/font/google";
 const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Add sprint",
-  description: "Add sprint",
+  title: "Add Task",
+  description: "Add task",
 };
 
-export default function addSprintLayout({ children }) {
+export default function addTaskLayout({ children }) {
   return (
-    <div className="add-sprint">
+    <div className="add-task">
       <div>{children}</div>
     </div>
   );

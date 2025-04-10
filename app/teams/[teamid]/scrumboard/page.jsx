@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@/components/ui/select";
-import { fetchSprintList } from "@/app/services/scrumService";
+import { fetchSprintList, fetchTasks, updateScrumBoard } from "@/app/services/scrumService";
 
 //TODO:
 
@@ -41,7 +41,11 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 export default function Home({ params }) {
   const router = useRouter();
   const teamid = params.teamid;
-  const [state, setState] = useState(initialData);
+  const [state, setState] = useState({
+    tasks: {},
+    columns: {},
+    columnOrder: [],
+  });
   const [oldState, setOldState] = useState([]);
   const [droppedState, setDroppedState] = useState([]);
   const [sprintsList, setSprints] = useState([]);
@@ -49,9 +53,11 @@ export default function Home({ params }) {
   useEffect(() => {
     const fetchSprints = async () => {
       try {
+        const fetchedTasks = await fetchTasks(teamid)
         const fetchSprints = await fetchSprintList(teamid);
         console.log("Fetched sprints: ", fetchSprints);
         setSprints(fetchSprints);
+        setState(fetchedTasks);
       } catch (error) {
         console.error("Error fetching sprints: ", error);
       }
@@ -61,13 +67,13 @@ export default function Home({ params }) {
   }, [teamid]);
 
   const sprints = useMemo(() => {
-    return sprintsList.map((sprint) => ({
-      id: sprint.id,
-      sprintNumber: sprint.sprintNumber,
-      name: `Sprint ${sprint.sprintNumber}`,
-    }));
-  }, [sprintsList]);
 
+    return createListCollection({
+      items: sprintsList.value || [],
+      itemToString: (item) => item.id,
+      itemToValue: (item) => item.sprintNumber,
+    });
+  }, [sprintsList.value]);
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
@@ -133,8 +139,13 @@ export default function Home({ params }) {
     console.log(state.columns);
   };
 
+  const handleSaveChanges = async () => {
+    // TODO: A request that sends the updated data to the Backend
+
+    const response = await updateScrumBoard(state.tasks)
+  };
+
   return (
-    //TODO: A button to go back to the details (cache system)
     <DragDropContext onDragEnd={onDragEnd}>
       <Flex
         flexDir="column"
@@ -167,7 +178,7 @@ export default function Home({ params }) {
             collection={sprints}
             position="absolute"
             top="1rem"
-            left="15rem"
+            left="20rem"
             size="sm"
             variant="outline"
             width="120px"
@@ -187,6 +198,42 @@ export default function Home({ params }) {
               )}
             </SelectContent>
           </SelectRoot>
+
+          <Button
+            position="absolute"
+            top="1rem"
+            left="28rem"
+            onClick={() => router.push(`/teams/${teamid}/scrumboard/addSprint`)}
+            colorScheme="blue"
+            variant="outline"
+            size="sm"
+          >
+            Add Sprint
+          </Button>
+
+          <Button
+            position="absolute"
+            top="1rem"
+            left="35rem"
+            onClick={() => router.push(`/teams/${teamid}/scrumboard/addTask?boardId=${boardId}`)}
+            colorScheme="blue"
+            variant="outline"
+            size="sm"
+          >
+            Add Task
+          </Button>
+
+          <Button
+            position="absolute"
+            top="1rem"
+            left="90rem"
+            onClick={() => handleSaveChanges()}
+            colorScheme="green"
+            variant="outline"
+            size="sm"
+          >
+            Save Changes
+          </Button>
 
           <Heading padding="4px" fontSize="3xl" fontWeight={600}>
             React Beautiful Drag and Drop
@@ -215,96 +262,3 @@ export default function Home({ params }) {
     </DragDropContext>
   );
 }
-
-// TODO: load the user stories and the columns seperate, and sort the taskids to the column, with the state
-
-// const transformTasksData = (tasksArray) => {
-//   const transformedtasks = {};
-
-//   tasksArray.forEach(task => {
-//     transformedtasks[task.id] = {...task};
-//   });
-// }
-
-// transformTasksData(tasks);
-
-const initialData = {
-  tasks: {
-    1: {
-      id: 1,
-      state: 1,
-      creator: "Hockn",
-      assigned: "McMahon",
-      title: "ScrumDemo",
-      content: "Configure Next.js application",
-    },
-    2: {
-      id: 2,
-      state: 2,
-      creator: "Hockn",
-      assigned: "Kurt",
-      title: "ScrumDemo",
-      content: "Configure Next.js and tailwind ",
-    },
-    3: {
-      id: 3,
-      state: 1,
-      creator: "Toni",
-      assigned: "Mr.Perfect",
-      title: "ScrumDemo",
-      content: "Create sidebar navigation menu",
-    },
-    4: {
-      id: 4,
-      state: 1,
-      creator: "Toni",
-      assigned: "Toni",
-      title: "ScrumDemo",
-      content: "Create page footer",
-    },
-    5: {
-      id: 5,
-      state: 1,
-      creator: "Hockn",
-      assigned: "Marcel Krei",
-      title: "ScrumDemo",
-      content: "Create page navigation menu",
-    },
-    6: {
-      id: 6,
-      state: 1,
-      creator: "Hockn",
-      assigned: "Alex",
-      title: "ScrumDemo",
-      content: "Create page layout",
-    },
-  },
-  columns: {
-    "column-1": {
-      id: "column-1",
-      title: "TO-DO",
-      state: "1",
-      taskIds: [1, 2, 3, 4, 5, 6],
-    },
-    "column-2": {
-      id: "column-2",
-      title: "IN-PROGRESS",
-      state: "2",
-      taskIds: [],
-    },
-    "column-3": {
-      id: "column-3",
-      title: "COMPLETED",
-      state: "3",
-      taskIds: [],
-    },
-    "column-4": {
-      id: "column-4",
-      title: "Verified",
-      state: "4",
-      taskIds: [],
-    },
-  },
-  // Facilitate reordering of the columns
-  columnOrder: ["column-1", "column-2", "column-3", "column-4"],
-};
