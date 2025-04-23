@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getUserData, updateUserData } from "../services/userinfo";
 
 const Profile = () => {
@@ -9,6 +10,7 @@ const Profile = () => {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [userId, setUserId] = useState("");
+    const router = useRouter();
 
     useEffect(() => {
         const getCookie = (name) => {
@@ -37,7 +39,7 @@ const Profile = () => {
                 }
 
                 const userData = await response.json();
-                console.log("Data: ", userData)
+                console.log("Data: ", userData);
                 setFirstname(userData.firstname || "");
                 setLastName(userData.lastName || "");
                 setEmail(userData.email || "");
@@ -68,6 +70,20 @@ const Profile = () => {
         } catch (error) {
             console.error("Failed to update user data:", error);
         }
+    };
+
+    const handleLogout = () => {
+        // Clear all cookies
+        if (typeof document !== "undefined") {
+            const cookies = document.cookie.split(";");
+            for (const cookie of cookies) {
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+            }
+        }
+        // Redirect to login page
+        router.push("/login");
     };
 
     return (
@@ -110,6 +126,12 @@ const Profile = () => {
                         Save
                     </button>
                 </form>
+                <button
+                    onClick={handleLogout}
+                    className="mt-4 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-200"
+                >
+                    Log out
+                </button>
             </div>
         </div>
     );
